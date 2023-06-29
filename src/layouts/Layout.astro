@@ -1,36 +1,71 @@
 ---
-export interface Props {
-	title: string;
-}
-
 const { title } = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description">
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 <style is:global>
-	:root {
-		--accent: 124, 58, 237;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
-	}
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
+  @font-face {
+    font-family: "PoppinsRegular";
+    src: url(fonts/poppins-reg.ttf) format("truetype");
+  }
+  @font-face {
+    font-family: "PoppinsBold";
+    src: url(fonts/poppins-bold.ttf) format("truetype");
+  }
+  :root {
+    /* Spacers */
+    --spacer--sm: clamp(12px, 6.615383px + 1.538462vw, 22px);
+    --spacer--md: clamp(24px, 15.384617px + 2.461538vw, 40px);
+    --spacer--lg: clamp(32px, 8.8461525px + 6.615385vw, 75px);
+
+    /* Fonts */
+    --fontM: clamp(1.18rem, 0.94454538rem + 1.076364vw, 1.55rem);
+    --fontL: clamp(1.35rem, 0.93636366rem + 1.890909vw, 2rem);
+    --fontXL: clamp(1.5rem, 0.73636366rem + 3.490909vw, 2.7rem);
+    --fontXXL2: clamp(3rem, 2.2958rem + 3.0047vw, 5rem);
+    --fontXXL: clamp(4rem, 3.6479rem + 1.5023vw, 5rem);
+
+    /* Fams */
+    --poppinsReg: "PoppinsRegular", sans-serif;
+    --poppinsBold: "PoppinsBold", sans-serif;
+
+    /* Colors */
+    --colorWhite: #f2f2f2;
+    --colorDark: #0d0d0d;
+    --colorOrange: #db8a3f;
+    --colorBlue: #8de9fa;
+  }
+  *,
+  *::after,
+  *::before {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+  }
+  body {
+    background: var(--colorDark);
+    color: var(--colorWhite);
+    font-family: var(--poppinsReg);
+  }
+  .gradientText {
+    background: -webkit-linear-gradient(#facf61, #bf5417);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 </style>
