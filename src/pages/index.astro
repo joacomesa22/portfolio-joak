@@ -1,25 +1,33 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
 import Hero from "../components/Hero.astro";
 import Skillset from "../components/Skillset.astro";
 import Projects from "../components/Projects.astro";
+import About from "../components/About.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import NavBar from "../components/NavBar";
 ---
 
 <Layout title="Portfolio - Joaco">
   <div class="wrapper">
-    <Navbar />
-    <main class="flex flex-col gap-[var(--spacer--lg)] pt-[var(--spacer--lg)]">
+    <NavBar client:load />
+    <main class="flex flex-col gap-[var(--spacer--lg)] py-[var(--spacer--lg)]">
       <Hero />
       <Skillset />
       <Projects />
+      <About />
+      <Contact />
     </main>
+    <Footer />
   </div>
-</Layout>
 
-<style>
-  .wrapper {
-    margin: 0 auto;
-    max-width: 1200px;
-  }
-</style>
+  <style>
+    .wrapper {
+      margin: 0 auto;
+      max-width: 1200px;
+      padding-left: var(--spacer--md);
+      padding-right: var(--spacer--md);
+    }
+  </style>
+</Layout>

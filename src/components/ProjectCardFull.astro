@@ -4,26 +4,26 @@ const { rev, title, description, img, tech, links } = project.frontmatter;
 ---
 
 <div
-  class={`border-2 border-colorOrange rounded-xl flex justify-between items-center overflow-hidden ${
-    rev && "flex-row-reverse"
+  class={`md:h-[340px] border-2 border-colorOrange rounded-xl flex flex-col md:flex-row justify-between items-center overflow-hidden ${
+    rev && "md:flex-row-reverse"
   }`}
 >
-  <div class="w-[55%] h-[340px]">
+  <div class="md:w-[55%] h-full">
     <img
       src={img.src}
       alt={img.alt}
       class={`${
-        rev ? "border-l-2" : "border-r-2"
-      } border-colorOrange h-full w-full object-cover`}
+        rev ? "md:border-l-2" : "md:border-r-2"
+      } border-b-2 md:border-b-0 border-colorOrange h-full w-full object-cover`}
     />
   </div>
   <div
-    class={`flex flex-col h-full gap-4 ${
-      rev ? "items-start" : "items-end text-end"
-    } justify-between px-[var(--spacer--sm)] w-40%`}
+    class={`flex flex-col h-full gap-4 items-center text-center ${
+      rev ? "md:items-start md:text-start" : "md:items-end md:text-end"
+    } justify-between p-[var(--spacer--sm)] w-40%`}
   >
-    <h2 class="font-poppinsBold text-fontM">{title}</h2>
-    <p class="text-[.9rem] max-w-[400px]">{description}</p>
+    <h2 class="font-poppinsBold text-fontL">{title}</h2>
+    <p class="text-fontXS max-w-[400px]">{description}</p>
     <span class="gradientText">{tech}</span>
     <div class="flex gap-4">
       <a href={links.repo} target="_blank"

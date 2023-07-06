@@ -1,31 +1,35 @@
 ---
 import ProjectCardFull from "./ProjectCardFull.astro";
 import ProjectCardSimple from "./ProjectCardSimple.astro";
+import SectionTitle from "./SectionTitle.astro";
 const fullProjects = await Astro.glob("../projects/full/*.md");
 const simpleProjects = await Astro.glob("../projects/simple/*.md");
 ---
 
-<div class="flex flex-col gap-[var(--spacer--md)] items-center">
-  <h2
-    class="text-fontXL pb-2 px-[var(--spacer--md)] border-b-4 border-[#facf61]"
-  >
-    Projects
-  </h2>
-  <div
-    class="flex flex-col gap-[var(--spacer--md)] px-[var(--spacer--sm)] w-full"
-  >
-    {fullProjects.map((project) => <ProjectCardFull {project} />)}
-  </div>
-  <div class="flex flex-col items-center w-full">
-    <h3>Other Noteworthy Projects</h3>
-    <div
-      class="projectsGrid gap-[var(--spacer--sm)] px-[var(--spacer--sm)] w-full"
-    >
-      {simpleProjects.map((project) => <ProjectCardSimple {project} />)}
+<section
+  id="projects"
+  class="flex flex-col gap-[var(--spacer--lg)] items-center px-[var(--spacer--sm)]"
+>
+  <div class="flex flex-col gap-[var(--spacer--md)] items-center w-full">
+    <SectionTitle title="Projects" />
+    <div class="flex flex-col gap-[var(--spacer--md)] w-full">
+      {fullProjects.map((project) => <ProjectCardFull {project} />)}
     </div>
   </div>
-</div>
 
+  <div class="flex flex-col gap-[var(--spacer--md)] items-center w-full">
+    <h3 class="text-fontL font-poppinsBold">Other Noteworthy Projects</h3>
+    <div class="projectsGrid gap-[var(--spacer--sm)] w-full">
+      {simpleProjects.map((project) => <ProjectCardSimple {project} />)}
+    </div>
+    <a
+      href="https://github.com/joacomesa22"
+      class="bg-[#181818] flex justify-center items-center gap-2 font-bold py-2 px-6 border-2 border-colorBlue rounded-lg hover:bg-colorBlue hover:text-colorDark duration-300"
+    >
+      All Projects</a
+    >
+  </div>
+</section>
 <style>
   .projectsGrid {
     display: grid;

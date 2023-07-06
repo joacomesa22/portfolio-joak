@@ -8,7 +8,7 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/assets/logo.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
@@ -32,9 +32,11 @@ const { title } = Astro.props;
     --spacer--lg: clamp(32px, 8.8461525px + 6.615385vw, 75px);
 
     /* Fonts */
+    --fontXS: clamp(0.8rem, 0.7648rem + 0.1502vw, 0.9rem);
+    --fontS: clamp(0.8rem, 0.6944rem + 0.4507vw, 1.1rem);
     --fontM: clamp(1.18rem, 0.94454538rem + 1.076364vw, 1.55rem);
     --fontL: clamp(1.35rem, 0.93636366rem + 1.890909vw, 2rem);
-    --fontXL: clamp(1.5rem, 0.73636366rem + 3.490909vw, 2.7rem);
+    --fontXL: clamp(1.8rem, 1.4831rem + 1.3521vw, 2.7rem);
     --fontXXL2: clamp(3rem, 2.2958rem + 3.0047vw, 5rem);
     --fontXXL: clamp(4rem, 3.6479rem + 1.5023vw, 5rem);
 
@@ -58,6 +60,9 @@ const { title } = Astro.props;
     list-style: none;
     text-decoration: none;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     background: var(--colorDark);
     color: var(--colorWhite);
@@ -67,5 +72,55 @@ const { title } = Astro.props;
     background: -webkit-linear-gradient(#facf61, #bf5417);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .navLink {
+    position: relative;
+    padding-bottom: 4px;
+  }
+
+  .navLink::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    border-radius: 4px;
+    background-color: var(--colorBlue);
+    bottom: 0;
+    left: 0;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .navLink:hover::before {
+    transform-origin: left;
+    transform: scaleX(1);
+  }
+
+  .btn {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    padding-top: 0.2px;
+  }
+  .btn span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: var(--colorBlue);
+    margin-top: 6px;
+    transform-origin: 0px 100%;
+    transition: all 300ms;
+  }
+  .btn__line1-active {
+    transform: rotate(45deg) translate(-3px, 2px);
+  }
+  .btn__line2-active {
+    opacity: 0;
+    margin-right: 30px;
+  }
+  .btn__line3-active {
+    transform: rotate(-45deg) translate(-3px, 1px);
   }
 </style>

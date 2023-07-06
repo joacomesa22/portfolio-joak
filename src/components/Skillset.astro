@@ -1,26 +1,25 @@
-<div class="flex items-center flex-col gap-[var(--spacer--md)]">
-  <h2
-    class="text-fontXL pb-2 px-[var(--spacer--md)] border-b-4 border-[#facf61]"
-  >
-    Skillset
-  </h2>
+---
+import SectionTitle from "./SectionTitle.astro";
+---
+
+<section
+  id="skillset"
+  class="flex items-center flex-col gap-[var(--spacer--md)]"
+>
+  <SectionTitle title="Skillset" />
   <div
-    class="flex justify-center max-w-[800px] gap-[var(--spacer--md)] flex-wrap"
+    class="flex justify-center max-w-[460px] md:max-w-[600px] gap-[var(--spacer--md)] md:gap-[var(--spacer--md)] flex-wrap"
   >
-    <img src="./assets/html.svg" />
-    <img src="./assets/css.svg" />
-    <img src="./assets/sass.svg" />
-    <img src="./assets/js.svg" />
-    <img src="./assets/react.svg" />
-    <img src="./assets/html.svg" />
-    <img src="./assets/css.svg" />
-    <img src="./assets/sass.svg" />
-    <img src="./assets/js.svg" />
-    <img src="./assets/react.svg" />
-    <img src="./assets/html.svg" />
-    <img src="./assets/css.svg" />
-    <img src="./assets/sass.svg" />
-    <img src="./assets/js.svg" />
-    <img src="./assets/react.svg" />
+    <img src="./assets/html.svg" class="max-w-[45px] md:max-w-[60px]" />
+    <img src="./assets/css.svg" class="max-w-[45px] md:max-w-[60px]" />
+    <img src="./assets/js.svg" class="max-w-[45px] md:max-w-[60px]" />
+    <img src="./assets/react.svg" class="max-w-[55px] md:max-w-[70px]" />
+    <img src="./assets/tailwind.svg" class="max-w-[55px] md:max-w-[70px]" />
+    <img src="./assets/bootstrap.svg" class="max-w-[55px] md:max-w-[70px]" />
+    <img src="./assets/sass.svg" class="max-w-[55px] md:max-w-[70px]" />
+    <img src="./assets/astro.svg" class="max-w-[45px] md:max-w-[60px]" />
+    <img src="./assets/firebase.svg" class="max-w-[40px] md:max-w-[55px]" />
+    <img src="./assets/figma.svg" class="max-w-[40px] md:max-w-[55px]" />
+    <img src="./assets/photoshop.svg" class="max-w-[55px] md:max-w-[70px]" />
   </div>
-</div>
+</section>
