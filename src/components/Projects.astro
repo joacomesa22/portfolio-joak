@@ -2,6 +2,7 @@
 import ProjectCardFull from "./ProjectCardFull.astro";
 import ProjectCardSimple from "./ProjectCardSimple.astro";
 import SectionTitle from "./SectionTitle.astro";
+import Button from "./Button.astro";
 const fullProjects = await Astro.glob("../projects/full/*.md");
 const simpleProjects = await Astro.glob("../projects/simple/*.md");
 ---
@@ -22,17 +23,12 @@ const simpleProjects = await Astro.glob("../projects/simple/*.md");
     <div class="projectsGrid gap-[var(--spacer--sm)] w-full">
       {simpleProjects.map((project) => <ProjectCardSimple {project} />)}
     </div>
-    <a
-      href="https://github.com/joacomesa22"
-      class="bg-[#181818] flex justify-center items-center gap-2 font-bold py-2 px-6 border-2 border-colorBlue rounded-lg hover:bg-colorBlue hover:text-colorDark duration-300"
-    >
-      All Projects</a
-    >
+    <Button href="https://github.com/joacomesa22" text="All Projects" />
   </div>
+  <style>
+    .projectsGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  </style>
 </section>
-<style>
-  .projectsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-</style>

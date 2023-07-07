@@ -4,10 +4,12 @@ const { title, description, tech, links } = project.frontmatter;
 ---
 
 <div
-  class="flex flex-col gap-4 items-start p-[var(--spacer--sm)] border-2 border-colorOrange rounded-xl"
+  class="flex flex-col gap-4 items-start p-[var(--spacer--sm)] border-2 border-colorOrange rounded-xl hover:-translate-y-1 duration-300"
 >
-  <img src="./assets/project.svg" alt="project icon" />
-  <div class="flex flex-col gap-2">
+  <a href={links.deploy} target="_blank">
+    <img src="./assets/project.svg" alt="project icon" />
+  </a>
+  <div class="flex flex-col justify-between h-full gap-2">
     <h4 class="text-fontM font-poppinsBold">{title}</h4>
     <p class="text-[.9rem]">{description}</p>
     <span class="gradientText">{tech}</span>

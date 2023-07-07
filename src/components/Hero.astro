@@ -1,3 +1,7 @@
+---
+import Button from "./Button.astro";
+---
+
 <section
   class="flex justify-center lg:justify-between flex-wrap lg:flex-nowrap items-center bg-blue gap-[var(--spacer--lg)]"
 >
@@ -11,12 +15,9 @@
     <h2 class="gradientText text-fontXL font-poppinsBold">
       Front-end Developer
     </h2>
-    <a
-      href="mailto:joacomesa@gmail.com"
-      class="bg-[#181818] flex justify-center items-center gap-2 font-bold py-2 px-6 border-2 border-colorBlue rounded-lg mt-6 hover:bg-colorBlue hover:text-colorDark duration-300"
-    >
-      Let's Talk!</a
-    >
+    <div class="mt-6">
+      <Button href="mailto:joacomesa@gmail.com" text="Let's Talk!" />
+    </div>
   </div>
   <div class="max-w-[500px]">
     <img src="./assets/cafe.png" alt="joaco tomando cafe" />

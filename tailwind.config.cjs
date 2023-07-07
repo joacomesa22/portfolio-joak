@@ -8,6 +8,7 @@ module.exports = {
       colorDark: "var(--colorDark)",
       colorBlue: "var(--colorBlue)",
       colorOrange: "var(--colorOrange)",
+      colorGray: "var(--colorGray)",
     },
     fontSize: {
       fontXS: "var(--fontXS)",

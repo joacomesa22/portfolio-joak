@@ -1,8 +1,8 @@
 ---
 rev: false
 title: Weather App
-description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-img: { src: "./assets/weather.jpg", alt: "Groovemade" }
+description: This project helped me a lot to understand how JavaScript interacts with external APIs. Thanks to @WebDevSimplified for the inspiration.
+img: { src: "#", alt: "#" }
 tech: "HTML - CSS - JavaScript - Axios"
 links:
   {

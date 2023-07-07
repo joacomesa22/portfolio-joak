@@ -1,3 +1,7 @@
+---
+import Button from "./Button.astro";
+---
+
 <footer
   class="flex flex-wrap gap-[var(--spacer--lg)] justify-center md:justify-between items-center p-[var(--spacer--md)] border-t-2 border-colorOrange"
 >
@@ -9,33 +13,28 @@
   <div class="flex items-center gap-[var(--spacer--sm)]">
     <a
       href="https://www.instagram.com/joacoo.dev/"
-      class="hover:-translate-y-2 duration-300"
+      class="hover:scale-110 duration-300"
     >
       <img src="./assets/instagram.svg" alt="instagram icon" />
     </a>
     <a
       href="https://www.linkedin.com/in/joaquinmesa22/"
-      class="hover:-translate-y-2 duration-300"
+      class="hover:scale-110 duration-300"
     >
       <img src="./assets/linkedin.svg" alt="linkedin icon" />
     </a>
     <a
       href="https://www.behance.net/joacomesa1"
-      class="hover:-translate-y-2 duration-300"
+      class="hover:scale-110 duration-300"
     >
       <img src="./assets/behance.svg" alt="behance icon" />
     </a>
     <a
       href="https://github.com/joacomesa22"
-      class="hover:-translate-y-2 duration-300"
+      class="hover:scale-110 duration-300"
     >
       <img src="./assets/github2.svg" alt="github icon" />
     </a>
   </div>
-  <a
-    href="#"
-    class="bg-[#181818] flex justify-center items-center gap-2 font-bold py-2 px-6 border-2 border-colorBlue rounded-lg hover:bg-colorBlue hover:text-colorDark duration-300"
-  >
-    Resume</a
-  >
+  <Button href="#" text="Resume" />
 </footer>

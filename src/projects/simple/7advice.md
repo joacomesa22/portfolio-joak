@@ -1,7 +1,7 @@
 ---
 title: Advice Generator
-description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-img: { src: "./assets/groovemade.jpg", alt: "Groovemade" }
+description: Frontend Mentor Challenge for practicing how to interact with 3rd party APIs. For this challenge I used the Advice Slip JSON API.
+img: { src: "#", alt: "#" }
 tech: "HTML - CSS - JavaScript"
 links:
   {
