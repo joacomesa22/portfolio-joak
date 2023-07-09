@@ -9,29 +9,32 @@ const NavBar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center p-[var(--spacer--sm)]">
+    <div
+      id="navbar"
+      className="flex justify-between items-center p-[var(--spacer--sm)]"
+    >
       <div className="hover:scale-105 duration-300">
         <a href="/">
-          <img src="./assets/logo.svg" alt="logo" />
+          <img src="./assets/logo.svg" alt="logo" className="animate-fade" />
         </a>
       </div>
       <ul className="hidden sm:flex gap-8">
-        <li>
+        <li className="animate-slideDown1">
           <a href="#skillset" className="navLink">
             Skillset
           </a>
         </li>
-        <li>
+        <li className="animate-slideDown2">
           <a href="#projects" className="navLink">
             Projects
           </a>
         </li>
-        <li>
+        <li className="animate-slideDown3">
           <a href="#about" className="navLink">
             About
           </a>
         </li>
-        <li>
+        <li className="animate-slideDown4">
           <a href="#contact" className="navLink">
             Contact
           </a>

@@ -9,13 +9,15 @@ const { rev, title, description, img, tech, links } = project.frontmatter;
   }`}
 >
   <div class="md:w-[55%] h-full">
-    <img
-      src={img.src}
-      alt={img.alt}
-      class={`${
-        rev ? "md:border-l-2" : "md:border-r-2"
-      } border-b-2 md:border-b-0 border-colorOrange h-full w-full object-cover`}
-    />
+    <a href={links.deploy} target="_blank">
+      <img
+        src={img.src}
+        alt={img.alt}
+        class={`${
+          rev ? "md:border-l-2" : "md:border-r-2"
+        } border-b-2 md:border-b-0 border-colorOrange h-full w-full object-cover`}
+      />
+    </a>
   </div>
   <div
     class={`flex flex-col h-full gap-4 items-center text-center ${
