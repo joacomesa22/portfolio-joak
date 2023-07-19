@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 
 const NavBar = () => {
   const [nav, setNav] = useState(false);
@@ -42,9 +41,9 @@ const NavBar = () => {
       </ul>
       <div onClick={handleNav} className="block sm:hidden">
         {!nav ? (
-          <AiOutlineMenu size={35} fill="#8de9fa" />
+          <img src="./assets/bars.svg" alt="bars" className="h-[34px]" />
         ) : (
-          <AiOutlineClose size={35} fill="#8de9fa" />
+          <img src="./assets/xmark.svg" alt="bars" className="h-[40px]" />
         )}
       </div>
       <div
