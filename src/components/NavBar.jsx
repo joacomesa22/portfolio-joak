@@ -49,11 +49,11 @@ const NavBar = () => {
       <div
         className={
           !nav
-            ? "fixed left-[-100%] top-0 h-full w-[60%] border-r border-r-colorBlue bg-colorDark flex flex-col items-center justify-around "
-            : "fixed left-0 top-0 h-full w-[60%] border-r border-r-colorBlue bg-colorDark ease-in-out duration-500 flex flex-col items-center justify-around "
+            ? "fixed left-[-100%] top-0 h-full w-[60%] border-r border-r-colorBlue bg-colorDark flex flex-col items-center justify-around z-10"
+            : "fixed left-0 top-0 h-full w-[60%] border-r border-r-colorBlue bg-colorDark ease-in-out duration-500 flex flex-col items-center justify-around z-10"
         }
       >
-        <ul className="flex flex-col gap-8 items-center">
+        <ul className="flex flex-col gap-8 items-center bg-colorDark">
           <li className="p-4">
             <a href="#skillset" className="navLink" onClick={handleNav}>
               Skillset
