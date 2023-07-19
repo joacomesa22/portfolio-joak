@@ -1,7 +1,7 @@
 ---
 rev: false
 title: Weather App
-description: This project helped me a lot to understand how JavaScript interacts with external APIs. Thanks to @WebDevSimplified for the inspiration.
+description: This project helped me a lot to understand how JavaScript interacts with external APIs. I used the Open Meteo weather API.
 img: { src: "#", alt: "#" }
 tech: "HTML - CSS - JavaScript - Axios"
 links:
