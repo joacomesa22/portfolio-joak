@@ -9,10 +9,10 @@ const { rev, title, description, img, tech, links } = project.frontmatter;
   }`}
 >
   <div class="md:w-[55%] h-full">
-    <a href={links.deploy} target="_blank">
+    <a href={links?.deploy} target="_blank">
       <img
-        src={img.src}
-        alt={img.alt}
+        src={img?.src}
+        alt={img?.alt}
         class={`${
           rev ? "md:border-l-2" : "md:border-r-2"
         } border-b-2 md:border-b-0 border-colorOrange h-full w-full object-cover`}
@@ -28,10 +28,10 @@ const { rev, title, description, img, tech, links } = project.frontmatter;
     <p class="text-fontXS max-w-[400px]">{description}</p>
     <span class="gradientText">{tech}</span>
     <div class="flex gap-4">
-      <a href={links.repo} target="_blank"
+      <a href={links?.repo} target="_blank"
         ><img src="./assets/github.svg" alt="Github Logo" /></a
       >
-      <a href={links.deploy} target="_blank"
+      <a href={links?.deploy} target="_blank"
         ><img src="./assets/deploy.svg" alt="#" /></a
       >
     </div>
