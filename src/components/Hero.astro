@@ -6,16 +6,24 @@ import Button from "./Button.astro";
   class="flex justify-center lg:justify-between flex-wrap lg:flex-nowrap items-center bg-blue gap-[var(--spacer--lg)]"
 >
   <div
-    class="flex lg:items-start items-center text-center lg:text-start flex-col"
+    class="flex lg:items-start items-center text-center lg:text-start flex-col gap-3"
   >
     <p class="text-fontL animate-slideUp1">Hello!</p>
-    <h1 class="text-fontXXL2 animate-slideUp2">
+    <h1 class="text-fontXXL2 animate-slideUp2 leading-[1]">
       I'm <span class="font-poppinsBold">Joaco</span>
     </h1>
-    <h2 class="gradientText text-fontXL font-poppinsBold animate-slideUp3">
+    <h2 class="gradientText text-fontL font-poppinsBold animate-slideUp3">
       Front-end Developer
     </h2>
-    <div class="mt-6 animate-slideUp4">
+    <p class="text-balance text-fontS max-w-[600px] animate-slideUp4">
+      I build awesome interfaces by mixing my <span class="gradientText"
+        >coding skills</span
+      > with my <span class="gradientText">UX knoledge</span> and my passion for
+      <span class="gradientText">Artificial Intelligence</span>. It's all about
+      making things look good, work smoothly, and take full advantage of the
+      power of AI tools to create amazing digital experiences.
+    </p>
+    <div class="mt-6 animate-slideUp5">
       <Button href="mailto:joacomesa@gmail.com" text="Let's Talk!" />
     </div>
   </div>

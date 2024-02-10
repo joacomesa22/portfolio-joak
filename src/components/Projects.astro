@@ -23,12 +23,22 @@ const simpleProjects = await Astro.glob("../projects/simple/*.md");
     <div class="projectsGrid gap-[var(--spacer--sm)] w-full">
       {simpleProjects.map((project) => <ProjectCardSimple {project} />)}
     </div>
-    <Button href="https://github.com/joacomesa22" text="All Projects" />
+    <div class="flex flex-col items-center gap-3">
+      <Button href="https://github.com/joacomesa22" text="All Projects" />
+      <p class="text-fontXS">
+        I've done some design work too, <a
+          href="https://www.behance.net/joacomesa1"
+          class="navLink text-colorBlue"
+          target="_blank">Check it out!</a
+        >
+      </p>
+    </div>
   </div>
-  <style>
-    .projectsGrid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    }
-  </style>
 </section>
+
+<style>
+  .projectsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+</style>
