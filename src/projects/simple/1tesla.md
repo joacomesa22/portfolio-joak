@@ -6,6 +6,6 @@ tech: "Astro - Tailwind"
 links:
   {
     repo: "https://github.com/joacomesa22/tesla-landing-clone",
-    deploy: "https://tesla-landing-by-joaco.netlify.app/",
+    deploy: "https://tesla-landing-copy.vercel.app/",
   }
 ---
