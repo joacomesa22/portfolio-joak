@@ -7,6 +7,6 @@ tech: "Astro - JavaScript - React - Sass"
 links:
   {
     repo: "https://github.com/joacomesa22/matias-mesa-web",
-    deploy: "https://matias-mesa-web.vercel.app/",
+    deploy: "https://www.steadimatt.net/",
   }
 ---
