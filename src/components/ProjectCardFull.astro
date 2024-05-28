@@ -28,12 +28,21 @@ const { rev, title, description, img, tech, links } = project.frontmatter;
     <p class="text-fontXS max-w-[400px]">{description}</p>
     <span class="gradientText">{tech}</span>
     <div class="flex gap-4">
-      <a href={links?.repo} target="_blank"
-        ><img src="./assets/github.svg" alt="Github Logo" /></a
-      >
-      <a href={links?.deploy} target="_blank"
-        ><img src="./assets/deploy.svg" alt="#" /></a
-      >
+      {
+        links.repo && (
+          <a href={links?.repo} target="_blank">
+            <img src="./assets/github.svg" alt="Github Logo" />
+          </a>
+        )
+      }
+
+      {
+        links.deploy && (
+          <a href={links?.deploy} target="_blank">
+            <img src="./assets/deploy.svg" alt="Github Logo" />
+          </a>
+        )
+      }
     </div>
   </div>
 </div>
