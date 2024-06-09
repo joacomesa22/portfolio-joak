@@ -6,6 +6,6 @@ tech: "HTML - JavaScript - PHP - SQL"
 links:
   {
     repo: "https://github.com/joacomesa22/minimal",
-    deploy: "https://chance-mill.000webhostapp.com/index.html",
+    deploy: "https://minimal-web.000webhostapp.com/index.html",
   }
 ---
