@@ -10,7 +10,7 @@ const NavBar = () => {
   return (
     <div
       id="navbar"
-      className="flex justify-between items-center p-[var(--spacer--sm)] z-10"
+      className="flex justify-between items-center py-[var(--spacer--sm)] z-10"
     >
       <div className="hover:scale-105 duration-300">
         <a href="/">
