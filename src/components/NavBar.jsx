@@ -39,6 +39,22 @@ const NavBar = () => {
           </a>
         </li>
       </ul>
+      <div className="hidden sm:flex justify-center items-center gap-4 animate-fade">
+        <a
+          href="https://www.instagram.com/joacoo.dev/"
+          target="_blank"
+          className="hover:scale-110 duration-300"
+        >
+          <img src="./assets/instagram.svg" alt="instagram icon" />
+        </a>
+        <a
+          href="https://www.tiktok.com/@joacoo.dev"
+          target="_blank"
+          className="hover:scale-110 duration-300"
+        >
+          <img src="./assets/tiktok.svg" alt="tiktok icon" />
+        </a>
+      </div>
       <div onClick={handleNav} className="block sm:hidden">
         {!nav ? (
           <img src="./assets/bars.svg" alt="bars" className="h-[34px]" />
@@ -75,9 +91,20 @@ const NavBar = () => {
             </a>
           </li>
         </ul>
-        <div className="hover:scale-105 duration-300">
-          <a href="/">
-            <img src="./assets/logo.svg" alt="logo" />
+        <div className="flex flex-col justify-center items-center gap-6">
+          <a
+            href="https://www.instagram.com/joacoo.dev/"
+            target="_blank"
+            className="hover:scale-110 duration-300"
+          >
+            <img src="./assets/instagram.svg" alt="instagram icon" />
+          </a>
+          <a
+            href="https://www.tiktok.com/@joacoo.dev"
+            target="_blank"
+            className="hover:scale-110 duration-300"
+          >
+            <img src="./assets/tiktok.svg" alt="tiktok icon" />
           </a>
         </div>
       </div>
