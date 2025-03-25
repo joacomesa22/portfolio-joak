@@ -35,6 +35,7 @@ module.exports = {
         slideUp3: "slide-up 0.5s ease-in-out 1.4s both",
         slideUp4: "slide-up 0.5s ease-in-out 1.6s both",
         slideUp5: "slide-up 0.5s ease-in-out 1.8s both",
+        slideUp6: "slide-up 0.5s ease-in-out 2s both",
         slideRight: "slide-right 0.5s ease-in-out 1.8s both",
       },
     },
