@@ -7,6 +7,13 @@ const NavBar = () => {
     setNav(!nav);
   };
 
+  const navLinks = [
+    { href: "#skillset", label: "Skillset", animation: "animate-slideDown1" },
+    { href: "#projects", label: "Projects", animation: "animate-slideDown2" },
+    { href: "#about", label: "About", animation: "animate-slideDown3" },
+    { href: "#contact", label: "Contact", animation: "animate-slideDown4" },
+  ];
+
   return (
     <div
       id="navbar"
@@ -18,26 +25,13 @@ const NavBar = () => {
         </a>
       </div>
       <ul className="hidden sm:flex gap-8">
-        <li className="animate-slideDown1">
-          <a href="#skillset" className="navLink">
-            Skillset
-          </a>
-        </li>
-        <li className="animate-slideDown2">
-          <a href="#projects" className="navLink">
-            Projects
-          </a>
-        </li>
-        <li className="animate-slideDown3">
-          <a href="#about" className="navLink">
-            About
-          </a>
-        </li>
-        <li className="animate-slideDown4">
-          <a href="#contact" className="navLink">
-            Contact
-          </a>
-        </li>
+        {navLinks.map((link, idx) => (
+          <li key={link.href} className={link.animation}>
+            <a href={link.href} className="navLink">
+              {link.label}
+            </a>
+          </li>
+        ))}
       </ul>
       <div className="hidden sm:flex justify-center items-center gap-4 animate-fade">
         <a
@@ -70,26 +64,13 @@ const NavBar = () => {
         }
       >
         <ul className="flex flex-col gap-8 items-center bg-colorDark">
-          <li className="p-4">
-            <a href="#skillset" className="navLink" onClick={handleNav}>
-              Skillset
-            </a>
-          </li>
-          <li className="p-4">
-            <a href="#projects" className="navLink" onClick={handleNav}>
-              Projects
-            </a>
-          </li>
-          <li className="p-4">
-            <a href="#about" className="navLink" onClick={handleNav}>
-              About
-            </a>
-          </li>
-          <li className="p-4">
-            <a href="#contact" className="navLink" onClick={handleNav}>
-              Contact
-            </a>
-          </li>
+          {navLinks.map((link) => (
+            <li key={link.href} className="p-4">
+              <a href={link.href} className="navLink" onClick={handleNav}>
+                {link.label}
+              </a>
+            </li>
+          ))}
         </ul>
         <div className="flex flex-col justify-center items-center gap-6">
           <a
