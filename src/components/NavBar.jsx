@@ -8,10 +8,9 @@ const NavBar = () => {
   };
 
   const navLinks = [
-    { href: "#skillset", label: "Skillset", animation: "animate-slideDown1" },
-    { href: "#projects", label: "Projects", animation: "animate-slideDown2" },
-    { href: "#about", label: "About", animation: "animate-slideDown3" },
-    { href: "#contact", label: "Contact", animation: "animate-slideDown4" },
+    { href: "#projects", label: "Projects", animation: "animate-slideDown1" },
+    { href: "#about", label: "About", animation: "animate-slideDown2" },
+    { href: "#contact", label: "Contact", animation: "animate-slideDown3" },
   ];
 
   return (
@@ -25,7 +24,7 @@ const NavBar = () => {
         </a>
       </div>
       <ul className="hidden sm:flex gap-8">
-        {navLinks.map((link, idx) => (
+        {navLinks.map((link) => (
           <li key={link.href} className={link.animation}>
             <a href={link.href} className="navLink">
               {link.label}

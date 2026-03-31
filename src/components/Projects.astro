@@ -3,8 +3,10 @@ import ProjectCardFull from "./ProjectCardFull.astro";
 import ProjectCardSimple from "./ProjectCardSimple.astro";
 import SectionTitle from "./SectionTitle.astro";
 import Button from "./Button.astro";
-const fullProjects = await Astro.glob("../projects/full/*.md");
-const simpleProjects = await Astro.glob("../projects/simple/*.md");
+const fullProjectFiles = import.meta.glob("../projects/full/*.md", { eager: true });
+const simpleProjectFiles = import.meta.glob("../projects/simple/*.md", { eager: true });
+const fullProjects = Object.values(fullProjectFiles);
+const simpleProjects = Object.values(simpleProjectFiles);
 ---
 
 <section
