@@ -21,14 +21,13 @@ const simpleProjects = Object.values(simpleProjectFiles);
   </div>
 
   <div class="flex flex-col gap-[var(--spacer--md)] items-center w-full">
-    <h3 class="text-fontL font-poppinsBold">Other cool projects...</h3>
+    <h3 class="text-fontL font-bold">Other cool projects...</h3>
     <div class="projectsGrid gap-[var(--spacer--sm)] w-full">
       {simpleProjects.map((project) => <ProjectCardSimple {project} />)}
     </div>
     <div class="flex flex-col items-center gap-3">
-      <Button href="https://github.com/joacomesa22" text="All Projects" />
       <p class="text-fontXS">
-        More UX/UI design work on Behance, <a
+        More design work on Behance, <a
           href="https://www.behance.net/joacomesa1"
           class="navLink text-colorBlue"
           target="_blank">Check it out!</a

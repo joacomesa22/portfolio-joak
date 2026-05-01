@@ -20,8 +20,7 @@ module.exports = {
       fontXXL2: "var(--fontXXL2)",
     },
     fontFamily: {
-      poppinsReg: "var(--poppinsReg)",
-      poppinsBold: "var(--poppinsBold)",
+      jakarta: "var(--jakartaReg)",
     },
     extend: {
       animation: {

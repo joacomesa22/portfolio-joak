@@ -1,4 +1,7 @@
 ---
+import "@fontsource/plus-jakarta-sans/400.css";
+import "@fontsource/plus-jakarta-sans/700.css";
+
 const { title, description } = Astro.props;
 ---
 
@@ -26,14 +29,6 @@ const { title, description } = Astro.props;
   </body>
 </html>
 <style is:global>
-  @font-face {
-    font-family: "PoppinsRegular";
-    src: url("/fonts/poppins-reg.ttf") format("truetype");
-  }
-  @font-face {
-    font-family: "PoppinsBold";
-    src: url("/fonts/poppins-bold.ttf") format("truetype");
-  }
   :root {
     /* Spacers */
     --spacer--sm: clamp(12px, 6.615383px + 1.538462vw, 22px);
@@ -50,8 +45,7 @@ const { title, description } = Astro.props;
     --fontXXL: clamp(4rem, 3.6479rem + 1.5023vw, 5rem);
 
     /* Fams */
-    --poppinsReg: "PoppinsRegular", sans-serif;
-    --poppinsBold: "PoppinsBold", sans-serif;
+    --jakartaReg: "Plus Jakarta Sans", sans-serif;
 
     /* Colors */
     --colorWhite: #f2f2f2;
@@ -74,7 +68,7 @@ const { title, description } = Astro.props;
   }
   body {
     color: var(--colorWhite);
-    font-family: var(--poppinsReg);
+    font-family: var(--jakartaReg);
   }
 
   .gradientText {
