@@ -1,6 +1,6 @@
 ---
 title: Profes DyC
-description: I've designed and developed a web platform for students at my university to rate and review professors, helping others to make informed decisions.
+description: Profes DyC is a web platform where university students can rate and review their professors, helping others make more informed decisions about their courses.
 img: { src: "./assets/profes.avif", alt: "Profes DyC" }
 # tech: "Next.js - Tailwind - Turso"
 links: { deploy: "https://profes-dyc.vercel.app/" }

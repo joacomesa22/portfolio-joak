@@ -1,7 +1,8 @@
 ---
 title: Wayra
-description: Wayra is a high-end residential development located in Buenos Aires. I developed the website from scratch, collaborating closely with a designer. I’m really proud of how it turned out, reflecting both the designer’s vision and my technical execution.
+description: Wayra is a high-end residential development located in Buenos Aires, combining refined architecture with modern living and premium amenities. Its identity reflects a careful balance between sophistication and warmth, captured throughout every detail of the brand.
 img: { src: "./assets/wayra.avif", alt: "Wayra" }
 # tech: "Astro - Tailwind"
 links: { deploy: "https://livingwayra.com/" }
+rev: true
 ---
