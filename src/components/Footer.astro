@@ -15,9 +15,13 @@ import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
   <!-- A real element rather than a border, so it can be drawn left to right. -->
   <div data-anim="rule" class="mt-section-sm h-px w-full bg-rule"></div>
 
+  <!-- Three equal columns rather than justify-between: with space-between the
+       middle item only lands centred when the outer two happen to match in
+       width, and the left group is far wider than "Resume". Equal columns centre
+       the icons on the page regardless of what flanks them. -->
   <div
     data-group
-    class="flex flex-col gap-6 py-gutter text-body tablet:flex-row tablet:items-center tablet:justify-between tablet:gap-gutter"
+    class="flex flex-col gap-6 py-gutter text-body tablet:grid tablet:grid-cols-3 tablet:items-center tablet:gap-gutter"
   >
     <div
       data-anim="item"
@@ -40,7 +44,7 @@ import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
          in a row they belong between the two text groups. -->
     <nav
       data-anim="item"
-      class="order-1 flex items-center gap-6 tablet:order-none"
+      class="order-1 flex items-center gap-6 tablet:order-none tablet:justify-center"
       aria-label="Social media"
     >
       {
@@ -65,7 +69,7 @@ import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
       data-anim="item"
       target="_blank"
       rel="noopener noreferrer"
-      class="font-semibold hover:text-ink-muted"
+      class="font-semibold hover:text-ink-muted tablet:justify-self-end"
     >
       Resume
     </a>
