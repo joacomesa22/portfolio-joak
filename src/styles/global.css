@@ -1,0 +1,330 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   DESIGN TOKENS
+   Tailwind v4 is CSS-first: every custom property in `@theme` becomes a
+   utility class. There is no tailwind.config.mjs in this project.
+   ========================================================================== */
+
+@theme {
+  /* ------------------------------------------------------------------
+     BREAKPOINTS — STRICT
+     `--breakpoint-*: initial` deletes Tailwind's default scale, so
+     sm: md: lg: xl: 2xl: are not valid classes and emit nothing.
+     Exactly three stable layouts, exactly two breakpoints:
+       base    →   0 – 639px    (mobile)
+       tablet  → 640 – 1023px
+       desktop → 1024px and up
+     ------------------------------------------------------------------ */
+  --breakpoint-*: initial;
+  --breakpoint-tablet: 640px;
+  --breakpoint-desktop: 1024px;
+
+  /* ------------------------------------------------------------------
+     COLOR — warm off-white paper, near-black ink
+     ------------------------------------------------------------------ */
+  --color-*: initial;
+  --color-paper: #f2f1ec; /* page background */
+  --color-paper-alt: #efece6; /* alternating / recessed sections */
+  --color-ink: #111111; /* primary text, borders, fills */
+  --color-ink-muted: #6b6862; /* secondary copy, captions */
+  --color-rule: #d8d5cd; /* hairlines, dividers, card borders */
+  --color-accent: #db8a3f; /* carried from the previous brand — see note */
+
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* ------------------------------------------------------------------
+     TYPOGRAPHY — Onest, single family
+     ------------------------------------------------------------------ */
+  --font-sans: "Onest Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Fluid scale, locked between 375px and 1440px viewports.
+     Brutalist contrast: the display step is deliberately far from body. */
+  --text-display: clamp(3.25rem, 1.2254rem + 8.6385vw, 9rem);
+  --text-display--line-height: 0.88;
+  --text-display--letter-spacing: -0.04em;
+
+  --text-h1: clamp(2.5rem, 1.6197rem + 3.7559vw, 5rem);
+  --text-h1--line-height: 0.95;
+  --text-h1--letter-spacing: -0.03em;
+
+  --text-h2: clamp(1.875rem, 1.4789rem + 1.6901vw, 3rem);
+  --text-h2--line-height: 1.05;
+  --text-h2--letter-spacing: -0.02em;
+
+  --text-h3: clamp(1.375rem, 1.1989rem + 0.7512vw, 1.875rem);
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.01em;
+
+  --text-body-lg: clamp(1.0625rem, 0.9965rem + 0.2817vw, 1.25rem);
+  --text-body-lg--line-height: 1.5;
+
+  --text-body: clamp(0.9375rem, 0.8935rem + 0.1878vw, 1.0625rem);
+  --text-body--line-height: 1.6;
+
+  --text-meta: clamp(0.75rem, 0.728rem + 0.0939vw, 0.8125rem);
+  --text-meta--line-height: 1.4;
+  --text-meta--letter-spacing: 0.08em;
+
+  /* ------------------------------------------------------------------
+     SPACING — section rhythm + page gutter
+     Usable as py-section-md, gap-section-sm, px-gutter, etc.
+     ------------------------------------------------------------------ */
+  --spacing-gutter: clamp(1.25rem, 0.6338rem + 2.6291vw, 3rem);
+  --spacing-section-sm: clamp(3rem, 2.2957rem + 3.0047vw, 5rem);
+  --spacing-section-md: clamp(5rem, 3.5916rem + 6.0094vw, 9rem);
+  --spacing-section-lg: clamp(7rem, 4.8873rem + 9.0141vw, 13rem);
+
+  /* ------------------------------------------------------------------
+     LAYOUT — content shell widths
+     ------------------------------------------------------------------ */
+  --container-shell: 90rem; /* 1440px — outer page shell */
+  --container-content: 75rem; /* 1200px — standard section width */
+  --container-prose: 42rem; /* 672px  — readable measure */
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  :root {
+    /* Overwritten with the measured height as soon as JS runs. */
+    --header-h: 5.5rem;
+  }
+
+  html {
+    /* Lenis drives scrolling; native smooth scroll would fight it. */
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  /* Anything clickable gets the hand.
+     Links already inherit it from the UA, but Tailwind v4's Preflight dropped
+     the `button { cursor: pointer }` rule v3 shipped, so buttons and form
+     controls otherwise compute to `default`. */
+  a[href],
+  button,
+  [role="button"],
+  summary,
+  label[for],
+  select,
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="submit"],
+  input[type="reset"],
+  input[type="file"] {
+    cursor: pointer;
+  }
+
+  /* A hand on something you can't actually press is a lie. */
+  :disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+
+  /* Lenis sets this while a programmatic scroll is running. */
+  html.lenis-stopped {
+    overflow: hidden;
+  }
+}
+
+/* ==========================================================================
+   COMPONENTS
+   ========================================================================== */
+
+@layer components {
+  /**
+   * Fixed header that gets out of the way going down and comes back on the way
+   * up, so the nav is always one flick away instead of a scroll to the top.
+   *
+   * JS only writes a state onto the element; the motion is all CSS, which keeps
+   * it off the main thread and makes reduced-motion fall out for free (the
+   * media query below flattens the duration).
+   *
+   * --header-h is measured at runtime because the header is two lines on mobile
+   * and one from tablet up. The value here is only a pre-JS fallback; pages
+   * reserve this height in padding since the header itself is out of flow.
+   */
+  /* Nothing but movement: no background, no rule. The header stays part of the
+     page it floats over, so "top" and "pinned" look identical and only "hidden"
+     is styled. */
+  [data-header] {
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Scrolling down and past the header: tuck it away entirely. */
+  [data-header][data-state="hidden"] {
+    transform: translateY(-100%);
+  }
+
+  /**
+   * Full-bleed hero name.
+   *
+   * The size is a pure `vw` coefficient rather than a clamp: because the string
+   * and the face are both fixed, a proportional size means the name spans the
+   * same fraction of the viewport at EVERY width — genuinely edge to edge, with
+   * no breakpoint ever getting a short or overflowing line. The coefficient is
+   * tuned by measurement against "Joaquín Mesa" in Instrument Serif; changing
+   * either the name or the display face means re-tuning it.
+   */
+  .hero-name {
+    --hero-name-w: 22.25vw;
+
+    font-family: var(--font-display);
+    font-size: var(--hero-name-w);
+    font-weight: 400;
+    line-height: 0.78;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    text-align: center;
+    /* The tight line-height lets glyphs spill past the line box, so the bottom
+       gutter is set optically off the descenders rather than off the box. In em,
+       so it tracks the name's own size at every viewport. */
+    margin-bottom: 0.22em;
+  }
+
+  /**
+   * Footer call-to-action.
+   *
+   * Same full-bleed idea as .hero-name, but the string is long enough that it
+   * only fits on one line once there is desktop width to spare. Below that it
+   * breaks to two lines, and the coefficient has to grow to keep the LONGEST
+   * line ("Let's work") spanning the column — hence a value per layout rather
+   * than one shared number.
+   */
+  .footer-name {
+    font-family: var(--font-display);
+    font-size: var(--footer-name-w);
+    font-weight: 400;
+    line-height: 0.86;
+    letter-spacing: -0.02em;
+    text-align: center;
+    text-wrap: balance;
+  }
+}
+
+/* ==========================================================================
+   ENTRANCE ANIMATIONS
+
+   Animated elements are hidden up front so they cannot flash at their final
+   position before GSAP takes over. The `.anim` hook is added by an inline
+   script in <head> that runs only when JS is live AND motion is allowed — so
+   with JS disabled, or reduced-motion on, none of these rules ever match and
+   the page is simply visible.
+   ========================================================================== */
+
+.anim [data-anim] {
+  opacity: 0;
+}
+
+/* The portrait opens like an aperture rather than fading — it is a circle, so
+   the shape does the revealing. Skipped once `.navigated` is set: after a
+   client-side route change the View Transition is already morphing this exact
+   element between pages, and a second animation would fight it. */
+.anim:not(.navigated) [data-portrait] {
+  clip-path: circle(0%);
+}
+
+/* ==========================================================================
+   HEADER OVER MEDIA
+
+   Deliberately unlayered. Tailwind's utilities layer outranks every @layer
+   regardless of specificity, so from inside `components` these could never beat
+   `text-ink-muted` on the role line or `hover:text-ink-muted` on the nav.
+   ========================================================================== */
+
+[data-header] a,
+[data-header] p {
+  transition: color 0.3s ease;
+}
+
+[data-header][data-over-media] a,
+[data-header][data-over-media] p {
+  color: #fff;
+}
+
+/* The role line stays secondary rather than flattening the pair to one white. */
+[data-header][data-over-media] p {
+  color: rgb(255 255 255 / 0.75);
+}
+
+/* Without this the nav would lose its hover response entirely while inverted. */
+[data-header][data-over-media] a:hover {
+  color: rgb(255 255 255 / 0.7);
+}
+
+/* ==========================================================================
+   CURSOR DOT
+   ========================================================================== */
+
+[data-cursor] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100; /* above the header */
+  color: var(--color-ink);
+  pointer-events: none; /* never steals a click or a hover */
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  will-change: transform;
+}
+
+[data-cursor][data-visible] {
+  opacity: 1;
+}
+
+/* No pointer to follow — and the element would otherwise linger mid-screen. */
+@media (hover: none), (pointer: coarse) {
+  [data-cursor] {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-cursor] {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

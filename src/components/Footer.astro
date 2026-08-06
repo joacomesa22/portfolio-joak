@@ -1,51 +1,73 @@
 ---
-import Button from "./Button.astro";
+import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
 ---
 
-<footer
-  class="flex flex-wrap gap-[var(--spacer--lg)] justify-center md:justify-between items-center p-[var(--spacer--md)] border-t-2 border-colorOrange -z-10"
->
-  <div class="hover:scale-105 duration-300">
-    <a href="#navbar">
-      <img src="./assets/logo.svg" alt="logo" />
+<footer class="flex h-svh min-h-[34rem] flex-col justify-end px-gutter">
+  <!-- The name sits low: it is the last thing on the page, so the empty space
+       belongs above it, not split around it. -->
+  <h2
+    data-anim="lines"
+    class="footer-name [--footer-name-w:26.6vw] tablet:[--footer-name-w:27.2vw] desktop:[--footer-name-w:14.8vw]"
+  >
+    Let&apos;s work together
+  </h2>
+
+  <!-- A real element rather than a border, so it can be drawn left to right. -->
+  <div data-anim="rule" class="mt-section-sm h-px w-full bg-rule"></div>
+
+  <div
+    data-group
+    class="flex flex-col gap-6 py-gutter text-body tablet:flex-row tablet:items-center tablet:justify-between tablet:gap-gutter"
+  >
+    <div
+      data-anim="item"
+      class="flex flex-col gap-2 tablet:flex-row tablet:items-center tablet:gap-6"
+    >
+      <a
+        href={LINKEDIN}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-semibold hover:text-ink-muted"
+      >
+        LinkedIn
+      </a>
+      <a href={`mailto:${EMAIL}`} class="font-semibold hover:text-ink-muted">
+        {EMAIL}
+      </a>
+    </div>
+
+    <!-- Stacked, the icons read as a footnote to the text links, so they go last;
+         in a row they belong between the two text groups. -->
+    <nav
+      data-anim="item"
+      class="order-1 flex items-center gap-6 tablet:order-none"
+      aria-label="Social media"
+    >
+      {
+        SOCIALS.map((s) => (
+          <a
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-ink transition-colors hover:text-ink-muted"
+            aria-label={s.label}
+          >
+            <svg class="h-5 w-5" fill="currentColor" aria-hidden="true">
+              <use href={`#icon-${s.icon}`} />
+            </svg>
+          </a>
+        ))
+      }
+    </nav>
+
+    <a
+      href={RESUME}
+      data-anim="item"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="font-semibold hover:text-ink-muted"
+    >
+      Resume
     </a>
   </div>
-  <div class="flex items-center gap-[var(--spacer--sm)]">
-    <a
-      href="https://www.instagram.com/joacoo.dev/"
-      target="_blank"
-      class="hover:scale-110 duration-300"
-    >
-      <img src="./assets/instagram.svg" alt="instagram icon" />
-    </a>
-    <a
-      href="https://www.tiktok.com/@joacoo.dev"
-      target="_blank"
-      class="hover:scale-110 duration-300"
-    >
-      <img src="./assets/tiktok.svg" alt="tiktok icon" />
-    </a>
-    <a
-      href="https://www.linkedin.com/in/joaquinmesa22/"
-      target="_blank"
-      class="hover:scale-110 duration-300"
-    >
-      <img src="./assets/linkedin.svg" alt="linkedin icon" />
-    </a>
-    <a
-      href="https://www.behance.net/joacomesa1"
-      target="_blank"
-      class="hover:scale-110 duration-300"
-    >
-      <img src="./assets/behance.svg" alt="behance icon" />
-    </a>
-    <a
-      href="https://github.com/joacomesa22"
-      target="_blank"
-      class="hover:scale-110 duration-300"
-    >
-      <img src="./assets/github2.svg" alt="github icon" />
-    </a>
-  </div>
-  <Button href="./assets/resume.pdf" text="Resume" />
 </footer>

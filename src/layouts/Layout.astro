@@ -1,208 +1,98 @@
 ---
-import "@fontsource/plus-jakarta-sans/400.css";
-import "@fontsource/plus-jakarta-sans/700.css";
+import "@fontsource-variable/onest";
+import "@fontsource/instrument-serif/400.css";
+import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import IconSprite from "../components/IconSprite.astro";
+import Header from "../components/Header.astro";
 
-const { title, description } = Astro.props;
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Joaquín Mesa — UX Designer & Developer",
+  description = "Portfolio of Joaquín Mesa, UX/UI designer and front-end developer based in Buenos Aires.",
+} = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="Welcome to my portfolio!" />
-    <meta name="keywords" content="HTML, CSS, JavaScript, React, Portfolio" />
-    <meta name="author" content="Joaquin Mesa" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="shortcut icon" href="/assets/favicon.png" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#F2F1EC" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
+    <ClientRouter />
+
+    <!-- Marks the document as animatable before first paint, so animated
+         elements are hidden from the very first frame instead of flashing at
+         their final position. Deliberately not a module: it must run now. If JS
+         is off or motion is reduced the class never lands and nothing hides. -->
+    <script is:inline>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("anim");
+
+        // Safety net: hiding content up front means a failure to load the
+        // animation module would leave the page permanently blank. If nothing
+        // has claimed the hook shortly after load, drop it and show everything —
+        // an unanimated page beats an invisible one.
+        setTimeout(function () {
+          if (!document.documentElement.dataset.animReady) {
+            document.documentElement.classList.remove("anim");
+          }
+        }, 3000);
+      }
+    </script>
   </head>
   <body>
-    <div class="fixed h-full w-full bg-colorDark -z-50">
-      <div
-        class="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"
-      >
-      </div>
-    </div>
+    <IconSprite />
+    <Header />
     <slot />
+
+    <!-- Rides alongside the native cursor; see cursor.ts. -->
+    <svg data-cursor viewBox="0 0 10 10" width="10" height="10" aria-hidden="true">
+      <circle cx="5" cy="5" r="5" fill="currentColor"></circle>
+    </svg>
+
+    <script>
+      import { initSmoothScroll, destroySmoothScroll } from "../scripts/smooth-scroll";
+      import { initAnimations, destroyAnimations } from "../scripts/animations";
+      import { initHeader, destroyHeader } from "../scripts/header";
+      import { initCursor, destroyCursor } from "../scripts/cursor";
+
+      // With the router in play this module runs once, not per page, so the
+      // lifecycle events drive it: tear Lenis and the ScrollTriggers down before
+      // the swap so they can't fight the transition or leak across pages, then
+      // rebuild against the new DOM. astro:page-load also fires on first load.
+      document.addEventListener("astro:before-swap", () => {
+        destroyAnimations();
+        destroySmoothScroll();
+        destroyHeader();
+        destroyCursor();
+      });
+
+      // The swap replaces <html>'s attributes, so the class the inline script
+      // added is lost on every navigation and has to be put back. This fires
+      // before the new DOM paints, which is what keeps elements hidden until
+      // GSAP reveals them. `navigated` rides along so the portrait is never
+      // re-hidden — from here on it belongs to the View Transition.
+      document.addEventListener("astro:after-swap", () => {
+        if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          document.documentElement.classList.add("anim", "navigated");
+        }
+      });
+
+      document.addEventListener("astro:page-load", () => {
+        initSmoothScroll();
+        initHeader();
+        initCursor();
+        void initAnimations();
+      });
+    </script>
   </body>
 </html>
-<style is:global>
-  :root {
-    /* Spacers */
-    --spacer--sm: clamp(12px, 6.615383px + 1.538462vw, 22px);
-    --spacer--md: clamp(24px, 15.384617px + 2.461538vw, 40px);
-    --spacer--lg: clamp(32px, 8.8461525px + 6.615385vw, 75px);
-
-    /* Fonts */
-    --fontXS: clamp(0.8rem, 0.7648rem + 0.1502vw, 0.9rem);
-    --fontS: clamp(0.9rem, 0.8648rem + 0.1502vw, 1rem);
-    --fontM: clamp(1.18rem, 0.94454538rem + 1.076364vw, 1.55rem);
-    --fontL: clamp(1.35rem, 0.93636366rem + 1.890909vw, 2rem);
-    --fontXL: clamp(1.8rem, 1.4831rem + 1.3521vw, 2.7rem);
-    --fontXXL2: clamp(3rem, 2.2958rem + 3.0047vw, 5rem);
-    --fontXXL: clamp(4rem, 3.6479rem + 1.5023vw, 5rem);
-
-    /* Fams */
-    --jakartaReg: "Plus Jakarta Sans", sans-serif;
-
-    /* Colors */
-    --colorWhite: #f2f2f2;
-    --colorDark: #0d0d0d;
-    --colorGray: #181818;
-    --colorOrange: #db8a3f;
-    --colorBlue: #8de9fa;
-  }
-  *,
-  *::after,
-  *::before {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    list-style: none;
-    text-decoration: none;
-  }
-  html {
-    scroll-behavior: smooth;
-  }
-  body {
-    color: var(--colorWhite);
-    font-family: var(--jakartaReg);
-  }
-
-  .gradientText {
-    color: var(--colorOrange);
-  }
-
-  .navLink {
-    position: relative;
-    padding-bottom: 4px;
-  }
-
-  .navLink::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 3px;
-    border-radius: 4px;
-    background-color: var(--colorBlue);
-    bottom: 0;
-    left: 0;
-    transform-origin: right;
-    transform: scaleX(0);
-    transition: transform 0.3s ease-in-out;
-  }
-
-  .navLink:hover::before {
-    transform-origin: left;
-    transform: scale(1);
-  }
-
-  /* Animations */
-
-  .reveal {
-    opacity: 0;
-    transition: all 1s;
-  }
-
-  .reveal.active {
-    opacity: 1;
-  }
-
-  .active.slide-right {
-    animation: slide-right-alt 0.2s ease-in;
-  }
-
-  .active.slide-left {
-    animation: slide-left 0.2s ease-in;
-  }
-
-  .active.slide-up {
-    animation: slide-up-alt 0.2s ease-in;
-  }
-
-  @keyframes slide-down {
-    0% {
-      transform: translateY(-10px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes slide-up {
-    0% {
-      transform: translateY(10px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes slide-up-alt {
-    0% {
-      transform: translateY(10px);
-    }
-    100% {
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slide-right {
-    0% {
-      transform: translateX(10px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes slide-right-alt {
-    0% {
-      transform: translateX(10px);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slide-left {
-    0% {
-      transform: translateX(-10px);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes fade-in {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-</style>
-
-<script>
-  function reveal() {
-    let reveals = document.querySelectorAll(".reveal");
-    for (let i = 0; i < reveals.length; i++) {
-      let windowHeight = window.innerHeight;
-      let elementTop = reveals[i].getBoundingClientRect().top;
-      let elementVisible = 250;
-      if (elementTop < windowHeight - elementVisible) {
-        reveals[i].classList.add("active");
-      }
-    }
-  }
-  window.addEventListener("scroll", reveal);
-</script>

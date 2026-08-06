@@ -1,0 +1,48 @@
+---
+const navLinks = [
+  { label: "About", href: "/about" },
+  { label: "Work", href: "/#work" },
+];
+
+// The nav sits on every page, so the current one shouldn't link to itself.
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+---
+
+<!-- Fixed rather than sticky: sticky is bounded by its containing block, and the
+     hero is an overflow-hidden section, so a sticky header would unstick the
+     moment the hero scrolled past. Fixed also takes it out of flow, which is why
+     the pages below reserve --header-h. -->
+<header
+  data-header
+  class="fixed inset-x-0 top-0 z-50 flex items-start justify-between gap-gutter px-[calc(var(--spacing-gutter)+0.75rem)] pt-gutter pb-5"
+>
+  <!-- Mobile stacks name over role; tablet and up sit them on one baseline. -->
+  <div class="flex flex-col tablet:flex-row tablet:items-baseline tablet:gap-3">
+    <a
+      href="/"
+      data-anim="header-item"
+      class="text-body font-semibold whitespace-nowrap">Joaquín Mesa</a
+    >
+    <p
+      data-anim="header-item"
+      class="max-w-[11ch] text-body text-ink-muted tablet:max-w-none"
+    >
+      UX Designer &amp; Developer
+    </p>
+  </div>
+
+  <nav class="flex shrink-0 items-baseline gap-5 tablet:gap-8">
+    {
+      navLinks.map((link) => (
+        <a
+          href={link.href}
+          data-anim="header-item"
+          aria-current={link.href === path ? "page" : undefined}
+          class="text-body font-semibold hover:text-ink-muted aria-[current=page]:text-ink-muted"
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>

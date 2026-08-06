@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<section id="work" class="px-gutter py-section-md">
+  <p data-anim="lines" class="max-w-[28ch] text-h2 font-display tablet:max-w-none">
+    Based in Buenos Aires, currently working at <span class="font-sans font-semibold">Zil Global</span>.
+  </p>
+
+  <div class="mt-section-sm grid grid-cols-1 gap-gutter tablet:grid-cols-2">
+    {
+      projects.map((project) => (
+        <a
+          href={project.data.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-anim="card"
+          class="group"
+        >
+          {project.data.image && (
+            <div data-header-invert class="overflow-hidden rounded-lg bg-paper-alt">
+              <img
+                src={project.data.image.src}
+                alt={project.data.imageAlt ?? project.data.title}
+                width={project.data.image.width}
+                height={project.data.image.height}
+                loading="lazy"
+                class="aspect-4/3 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              />
+            </div>
+          )}
+          <div class="mt-4">
+            <h3 class="text-body-lg font-semibold">{project.data.title}</h3>
+            <p class="mt-1 text-body text-ink-muted">{project.data.description}</p>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</section>

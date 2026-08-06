@@ -1,32 +1,35 @@
 ---
-import Button from "./Button.astro";
+import joaco from "../assets/img/joaco.jpeg";
 ---
 
+<!-- The header is fixed and lives in the layout now, so its height is reserved
+     with padding instead. Because the box is border-box, the section still
+     measures exactly one viewport and the band below the header is the same
+     size it was when the header sat in flow here. -->
 <section
-  class="flex justify-center lg:justify-between flex-wrap lg:flex-nowrap items-center bg-blue gap-[var(--spacer--lg)]"
+  data-hero
+  class="relative flex h-svh min-h-[34rem] flex-col overflow-hidden pt-[var(--header-h)]"
 >
+  <!-- The portrait is not centred in the leftover band: the name eats a third of
+       the viewport on desktop but only a sliver on mobile, so centring alone
+       drifts. --hero-img-bias corrects it per layout. Desktop stays at 0 — at
+       22vw, Instrument Serif leaves no room to push the portrait down without
+       its ascenders colliding with the photo on short viewports. -->
   <div
-    class="flex lg:items-start items-center text-center lg:text-start flex-col gap-3"
+    class="flex min-h-0 flex-1 items-center justify-center px-gutter [--hero-img-bias:-9vh] tablet:[--hero-img-bias:-2vh] desktop:[--hero-img-bias:-1.5vh]"
   >
-    <p class="text-fontL animate-slideUp1">Hello!</p>
-    <h1 class="text-fontXXL2 animate-slideUp2 leading-[1]">
-      I'm <span class="font-bold">Joaco</span>
-    </h1>
-    <h2 class="gradientText text-fontL font-bold animate-slideUp3">
-      UX Designer & Developer
-    </h2>
-    <p class="text-balance text-fontS max-w-[600px] animate-slideUp4">
-      I build awesome interfaces by mixing my <span class="gradientText"
-        >UX/UI design</span
-      > knowledge with my <span class="gradientText"> development skills</span>,
-      enhanced by my passion for
-      <span class="gradientText">AI</span>.
-    </p>
-    <div class="mt-6 animate-slideUp5">
-      <Button href="mailto:joacomesa@gmail.com" text="Let's Talk!" />
-    </div>
+    <img
+      src={joaco.src}
+      width={joaco.width}
+      height={joaco.height}
+      alt="Joaquín Mesa"
+      data-portrait
+      transition:name="portrait"
+      class="aspect-square max-h-full w-[56vw] translate-y-[var(--hero-img-bias)] object-cover tablet:h-[min(25.7rem,40svh)] tablet:w-auto desktop:h-[min(24.5rem,35svh)] desktop:w-auto rounded-full"
+    />
   </div>
-  <div class="max-w-[500px] animate-slideRight">
-    <img src="./assets/cafe.avif" alt="Me with my laptop" />
-  </div>
+
+  <!-- Sized in vw so the name spans the full viewport width at every size.
+       --hero-name-w is the tuned coefficient — see global.css. -->
+  <h1 data-anim="hero-name" class="hero-name">Joaquín Mesa</h1>
 </section>

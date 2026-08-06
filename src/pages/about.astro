@@ -1,0 +1,111 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Footer from "../components/Footer.astro";
+import { VIDEO_SOCIALS } from "../data/socials";
+import joaco from "../assets/img/joaco.jpeg";
+---
+
+<Layout
+  title="About — Joaquín Mesa"
+  description="UX Designer & Developer based in Buenos Aires, bridging the gap between beautiful design and functional code."
+>
+  <main class="pt-[var(--header-h)]">
+    <!-- Lead. The site's display voice is huge Instrument Serif, so the opening
+         statement carries it rather than a generic 'About' title. -->
+    <!-- The heading only ever fills the left of the page, so the portrait takes
+         the space it leaves rather than opening a row of its own. -->
+    <section
+      class="grid gap-gutter px-gutter pt-section-sm pb-section-md desktop:grid-cols-[1fr_auto] desktop:items-end desktop:gap-16"
+    >
+      <h1 data-anim="lines" class="max-w-[24ch] font-display text-h1 desktop:max-w-[26ch]">
+        I&apos;m a 24-year-old UX Designer &amp; Developer based in Buenos Aires.
+        I bridge the gap between beautiful design and functional code.
+      </h1>
+
+      <img
+        src={joaco.src}
+        width={joaco.width}
+        height={joaco.height}
+        alt="Joaquín Mesa"
+        data-portrait
+        transition:name="portrait"
+        class="aspect-square w-[56vw] rounded-full object-cover tablet:h-[min(25.7rem,40svh)] tablet:w-auto desktop:h-[min(24.5rem,35svh)] desktop:w-auto"
+      />
+    </section>
+
+    <!-- Side by side rather than one column, so neither paragraph runs the full
+         width of the page. auto-fit drops to one column when two would squeeze
+         the measure — a content-driven break, so it costs no extra breakpoint —
+         and the max-width keeps that single column readable too. -->
+    <section
+      data-group
+      class="grid grid-cols-[repeat(auto-fit,minmax(28rem,1fr))] gap-6 px-gutter pb-section-md text-body-lg desktop:gap-16 [&>p]:max-w-[38rem]"
+    >
+      <p data-anim="item">
+        With a degree in Digital Communication and professional training in
+        front-end development, I build digital experiences that aren&apos;t just
+        pretty, they work.
+      </p>
+      <p data-anim="item">
+        I&apos;m a firm believer in the power of AI. Integrating it into my
+        workflow to push the boundaries of what&apos;s possible in design and
+        dev.
+      </p>
+    </section>
+
+    <!-- Socials. Bigger than the footer marks because here they're the call to
+         action, not a footnote. -->
+    <section class="px-gutter py-section-md">
+      <div
+        data-group
+        class="flex flex-col gap-4 pb-8 tablet:flex-row tablet:items-end tablet:justify-between"
+      >
+        <h2 data-anim="item" class="max-w-[16ch] font-display text-h2">
+          Sharing my journey
+        </h2>
+        <p data-anim="item" class="text-body text-ink-muted">+45k followers</p>
+      </div>
+
+      <div data-anim="rule" class="h-px w-full bg-rule"></div>
+
+      <div data-group class="mt-gutter grid gap-gutter tablet:grid-cols-2">
+        {
+          VIDEO_SOCIALS.map((s) => (
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-anim="item"
+              class="group flex flex-col justify-between gap-16 rounded-lg border border-rule p-8 transition-colors duration-300 hover:border-ink hover:bg-ink hover:text-paper"
+            >
+              <svg
+                class="h-12 w-12 desktop:h-16 desktop:w-16"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <use href={`#icon-${s.icon}`} />
+              </svg>
+
+              <div class="flex items-end justify-between gap-4">
+                <div>
+                  <h3 class="font-display text-h3">{s.label}</h3>
+                  <p class="text-body text-ink-muted transition-colors group-hover:text-paper">
+                    {s.handle}
+                  </p>
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="text-h3 transition-transform duration-300 group-hover:translate-x-1"
+                >
+                  &rarr;
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
