@@ -53,7 +53,16 @@ function fontsReady(): Promise<unknown> {
  * assembles the way you read it instead of appearing all at once.
  */
 function revealLines(el: Element, immediate = false) {
-  const split = new SplitText(el, { type: "lines", linesClass: "split-line" });
+  // SplitText's default aria handling labels the element and hides the lines it
+  // makes. That reads correctly for plain type, but anything focusable inside
+  // would then sit in an aria-hidden subtree — reachable by keyboard, invisible
+  // to a screen reader. Where the sentence carries a link, leave the real
+  // markup exposed instead.
+  const split = new SplitText(el, {
+    type: "lines",
+    linesClass: "split-line",
+    aria: el.querySelector("a, button") ? "none" : "auto",
+  });
   splits.push(split);
   gsap.set(el, SHOWN); // the freshly-made lines carry the fade from here
 
