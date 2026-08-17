@@ -28,7 +28,11 @@ const projects = (await getCollection("projects")).sort(
           class="group"
         >
           {project.data.image && (
-            <div data-header-invert class="overflow-hidden rounded-lg bg-paper-alt">
+            <div
+              data-header-invert
+              data-project-card
+              class="overflow-hidden rounded-lg bg-paper-alt"
+            >
               <img
                 src={project.data.image.src}
                 alt={project.data.imageAlt ?? project.data.title}

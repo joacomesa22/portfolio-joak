@@ -9,9 +9,12 @@ import { gsap } from "gsap";
  */
 
 let dot: HTMLElement | null = null;
+let projectCards: HTMLElement[] = [];
 let onMove: ((event: PointerEvent) => void) | null = null;
 let onEnter: (() => void) | null = null;
 let onLeave: (() => void) | null = null;
+let onProjectEnter: (() => void) | null = null;
+let onProjectLeave: (() => void) | null = null;
 
 export function initCursor(): void {
   destroyCursor();
@@ -41,6 +44,16 @@ export function initCursor(): void {
   };
   onEnter = () => dot?.setAttribute("data-visible", "");
   onLeave = () => dot?.removeAttribute("data-visible");
+  onProjectEnter = () => dot?.setAttribute("data-hovering", "");
+  onProjectLeave = () => dot?.removeAttribute("data-hovering");
+
+  projectCards = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-project-card]"),
+  );
+  projectCards.forEach((card) => {
+    card.addEventListener("pointerenter", onProjectEnter);
+    card.addEventListener("pointerleave", onProjectLeave);
+  });
 
   window.addEventListener("pointermove", onMove, { passive: true });
   document.addEventListener("pointerenter", onEnter);
@@ -51,7 +64,14 @@ export function destroyCursor(): void {
   if (onMove) window.removeEventListener("pointermove", onMove);
   if (onEnter) document.removeEventListener("pointerenter", onEnter);
   if (onLeave) document.removeEventListener("pointerleave", onLeave);
-  onMove = onEnter = onLeave = null;
+  if (onProjectEnter && projectCards.length) {
+    projectCards.forEach((card) => {
+      card.removeEventListener("pointerenter", onProjectEnter);
+      card.removeEventListener("pointerleave", onProjectLeave);
+    });
+  }
+  onMove = onEnter = onLeave = onProjectEnter = onProjectLeave = null;
+  projectCards = [];
   if (dot) gsap.killTweensOf(dot);
   dot = null;
 }

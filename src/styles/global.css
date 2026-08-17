@@ -24,12 +24,18 @@
      COLOR — warm off-white paper, near-black ink
      ------------------------------------------------------------------ */
   --color-*: initial;
-  --color-paper: #f2f1ec; /* page background */
-  --color-paper-alt: #efece6; /* alternating / recessed sections */
-  --color-ink: #111111; /* primary text, borders, fills */
-  --color-ink-muted: #6b6862; /* secondary copy, captions */
-  --color-rule: #d8d5cd; /* hairlines, dividers, card borders */
-  --color-accent: #db8a3f; /* carried from the previous brand — see note */
+  --color-paper: #f2f1ec;
+  /* page background */
+  --color-paper-alt: #efece6;
+  /* alternating / recessed sections */
+  --color-ink: #111111;
+  /* primary text, borders, fills */
+  --color-ink-muted: #6b6862;
+  /* secondary copy, captions */
+  --color-rule: #d8d5cd;
+  /* hairlines, dividers, card borders */
+  --color-accent: #db8a3f;
+  /* carried from the previous brand — see note */
 
   --color-transparent: transparent;
   --color-current: currentColor;
@@ -81,9 +87,12 @@
   /* ------------------------------------------------------------------
      LAYOUT — content shell widths
      ------------------------------------------------------------------ */
-  --container-shell: 90rem; /* 1440px — outer page shell */
-  --container-content: 75rem; /* 1200px — standard section width */
-  --container-prose: 42rem; /* 672px  — readable measure */
+  --container-shell: 90rem;
+  /* 1440px — outer page shell */
+  --container-content: 75rem;
+  /* 1200px — standard section width */
+  --container-prose: 42rem;
+  /* 672px  — readable measure */
 }
 
 /* ==========================================================================
@@ -165,6 +174,7 @@
    ========================================================================== */
 
 @layer components {
+
   /**
    * Fixed header that gets out of the way going down and comes back on the way
    * up, so the nav is always one flick away instead of a scroll to the top.
@@ -293,20 +303,64 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100; /* above the header */
+  z-index: 100;
+  /* above the header */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: var(--color-ink);
   color: var(--color-ink);
-  pointer-events: none; /* never steals a click or a hover */
+  pointer-events: none;
+  /* never steals a click or a hover */
   opacity: 0;
-  transition: opacity 0.25s ease;
-  will-change: transform;
+  transform: translate(-50%, -50%) scale(1);
+  transition:
+    width 0.28s ease,
+    height 0.28s ease,
+    border-radius 0.28s ease,
+    opacity 0.25s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  will-change: transform, width, height, opacity;
 }
 
 [data-cursor][data-visible] {
   opacity: 1;
 }
 
+[data-cursor][data-hovering] {
+  width: 120px;
+  height: 40px;
+  border-radius: 9999px;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+[data-cursor-label] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-paper);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.25s ease;
+}
+
+[data-cursor][data-hovering] [data-cursor-label] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* No pointer to follow — and the element would otherwise linger mid-screen. */
-@media (hover: none), (pointer: coarse) {
+@media (hover: none),
+(pointer: coarse) {
   [data-cursor] {
     display: none;
   }
@@ -319,6 +373,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

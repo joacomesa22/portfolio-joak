@@ -55,9 +55,9 @@ const {
     <slot />
 
     <!-- Rides alongside the native cursor; see cursor.ts. -->
-    <svg data-cursor viewBox="0 0 10 10" width="10" height="10" aria-hidden="true">
-      <circle cx="5" cy="5" r="5" fill="currentColor"></circle>
-    </svg>
+    <div data-cursor aria-hidden="true">
+      <span data-cursor-label>View Work</span>
+    </div>
 
     <script>
       import { initSmoothScroll, destroySmoothScroll } from "../scripts/smooth-scroll";
