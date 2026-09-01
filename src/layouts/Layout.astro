@@ -31,10 +31,15 @@ const {
     <title>{title}</title>
     <ClientRouter />
 
-    <!-- Resolves the theme before the body paints, so a dark-mode visitor never
-         gets a white flash. Deliberately not a module and deliberately ahead of
-         everything else in <head>: it has to run now, synchronously. theme.ts
-         owns every later change; this only sets the opening state.
+    <!-- Resolves the theme before the body paints, so a returning dark-mode
+         visitor never gets a white flash. Deliberately not a module and
+         deliberately ahead of everything else in <head>: it has to run now,
+         synchronously. theme.ts owns every later change; this only sets the
+         opening state.
+
+         Light unless dark was explicitly chosen and stored — the OS preference
+         is not consulted. The attribute is written either way, since the toggle
+         stays hidden until one is present.
          The storage key is shared with theme.ts — change both together. -->
     <script is:inline>
       (function () {
@@ -42,14 +47,9 @@ const {
         try {
           stored = localStorage.getItem("theme");
         } catch (e) {
-          /* private mode; fall through to the OS preference */
+          /* private mode; the default stands */
         }
-        var theme =
-          stored === "light" || stored === "dark"
-            ? stored
-            : matchMedia("(prefers-color-scheme: dark)").matches
-              ? "dark"
-              : "light";
+        var theme = stored === "dark" ? "dark" : "light";
         document.documentElement.dataset.theme = theme;
         if (theme === "dark") {
           var meta = document.querySelector('meta[name="theme-color"]');
@@ -105,11 +105,7 @@ const {
           /* private mode */
         }
         document.documentElement.dataset.theme =
-          stored === "light" || stored === "dark"
-            ? stored
-            : matchMedia("(prefers-color-scheme: dark)").matches
-              ? "dark"
-              : "light";
+          stored === "dark" ? "dark" : "light";
       }
 
       // With the router in play this module runs once, not per page, so the

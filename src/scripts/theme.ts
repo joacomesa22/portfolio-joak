@@ -5,11 +5,10 @@
  * global.css); this module only decides which one is active and writes
  * `data-theme` onto <html>.
  *
- * Three states, not two: "light" and "dark" are explicit choices that persist,
- * and no stored value at all means "follow the OS", which keeps tracking the OS
- * for as long as the visitor never picks a side. The attribute is always
- * resolved to a concrete value so the CSS and the button icon can both key off
- * it directly.
+ * Light is the default for everyone, whatever the OS is set to — the site is a
+ * designed object and should open the way it was designed. Dark is opt-in, and
+ * once someone opts in the choice is stored and honoured from then on.
+ * `prefers-color-scheme` is deliberately not consulted anywhere.
  *
  * The first paint is handled by an inline script in Layout.astro, which has to
  * run before the body renders. This module owns everything after that.
@@ -22,24 +21,16 @@ const STORAGE_KEY = "theme";
 
 let toggle: HTMLElement | null = null;
 let onClick: (() => void) | null = null;
-let systemQuery: MediaQueryList | null = null;
-let onSystemChange: ((event: MediaQueryListEvent) => void) | null = null;
 
-function systemTheme(): Theme {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-}
-
-/** `null` means no explicit choice has been made, so the OS still decides. */
-function storedTheme(): Theme | null {
+/** Whatever was stored, or light for a visitor who has never chosen. */
+function storedTheme(): Theme {
   try {
     const value = localStorage.getItem(STORAGE_KEY);
-    return value === "light" || value === "dark" ? value : null;
+    return value === "dark" ? "dark" : "light";
   } catch {
     // Safari in private mode throws on localStorage. Not being able to remember
     // the choice is no reason to break the toggle.
-    return null;
+    return "light";
   }
 }
 
@@ -100,31 +91,18 @@ export function initTheme(): void {
 
   // The router replaces <html>'s attributes on every navigation, so the
   // attribute the boot script wrote is gone by the time this runs on page two.
-  applyTheme(storedTheme() ?? systemTheme());
+  applyTheme(storedTheme());
 
   toggle = document.querySelector<HTMLElement>("[data-theme-toggle]");
-  if (toggle) {
-    syncToggle(currentTheme());
-    onClick = () => switchTheme(currentTheme() === "dark" ? "light" : "dark");
-    toggle.addEventListener("click", onClick);
-  }
+  if (!toggle) return;
 
-  // Only while no explicit choice exists: someone who picked a side keeps it
-  // even if they flip their OS at sundown.
-  systemQuery = window.matchMedia("(prefers-color-scheme: dark)");
-  onSystemChange = (event) => {
-    if (storedTheme()) return;
-    applyTheme(event.matches ? "dark" : "light");
-  };
-  systemQuery.addEventListener("change", onSystemChange);
+  syncToggle(currentTheme());
+  onClick = () => switchTheme(currentTheme() === "dark" ? "light" : "dark");
+  toggle.addEventListener("click", onClick);
 }
 
 export function destroyTheme(): void {
   if (toggle && onClick) toggle.removeEventListener("click", onClick);
   toggle = null;
   onClick = null;
-  if (systemQuery && onSystemChange)
-    systemQuery.removeEventListener("change", onSystemChange);
-  systemQuery = null;
-  onSystemChange = null;
 }

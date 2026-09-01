@@ -121,7 +121,10 @@
     /* Overwritten with the measured height as soon as JS runs. */
     --header-h: 5.5rem;
 
-    /* Light palette — the default, and the site's identity. */
+    /* Light palette — the site's identity, and what everyone gets until they
+       ask for otherwise. Deliberately not behind `prefers-color-scheme`: a
+       portfolio is a designed object, and it should open the way it was
+       designed rather than the way the visitor's laptop happens to be set. */
     color-scheme: light;
     --paper: #ffffff;
     --paper-sunk: #f4f6f7;
@@ -131,22 +134,8 @@
     --accent: #ff4103;
   }
 
-  /* Dark palette.
-     Written once and applied from two places: the media query is the no-JS and
-     first-paint answer, the attribute is the explicit choice. `:not([data-theme="light"])`
-     is what lets someone on a dark OS still pick light and have it stick. */
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --paper: #001621;
-      --paper-sunk: #04202d;
-      --ink: #eaf0f2;
-      --ink-muted: #8ea0a8;
-      --rule: #123240;
-      --accent: #ff5c26;
-    }
-  }
-
+  /* Dark palette. Only ever reached through the attribute, which only the
+     toggle sets — so there is no media query here to race it. */
   :root[data-theme="dark"] {
     color-scheme: dark;
     --paper: #001621;
