@@ -17,28 +17,22 @@ import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
 
   <!-- Three equal columns rather than justify-between: with space-between the
        middle item only lands centred when the outer two happen to match in
-       width, and the left group is far wider than "Resume". Equal columns centre
-       the icons on the page regardless of what flanks them. -->
+       width, and the address on the left is far wider than the pair on the
+       right. Equal columns centre the icons on the page regardless of what
+       flanks them. -->
   <div
     data-group
     class="flex flex-col gap-6 py-gutter text-body tablet:grid tablet:grid-cols-3 tablet:items-center tablet:gap-gutter"
   >
-    <div
+    <!-- The address is the one thing here that is an invitation rather than a
+         destination, so it stands alone on the left. -->
+    <a
       data-anim="item"
-      class="flex flex-col gap-2 tablet:flex-row tablet:items-center tablet:gap-6"
+      href={`mailto:${EMAIL}`}
+      class="font-semibold transition-colors hover:text-orange"
     >
-      <a
-        href={LINKEDIN}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="font-semibold transition-colors hover:text-orange"
-      >
-        LinkedIn
-      </a>
-      <a href={`mailto:${EMAIL}`} class="font-semibold transition-colors hover:text-orange">
-        {EMAIL}
-      </a>
-    </div>
+      {EMAIL}
+    </a>
 
     <!-- Stacked, the icons read as a footnote to the text links, so they go last;
          in a row they belong between the two text groups. -->
@@ -64,14 +58,29 @@ import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
       }
     </nav>
 
-    <a
-      href={RESUME}
+    <!-- LinkedIn and the resume are the same errand — go read about the work
+         somewhere else — so they travel together on the right rather than
+         sitting at opposite ends of the row. -->
+    <div
       data-anim="item"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="font-semibold transition-colors hover:text-orange tablet:justify-self-end"
+      class="flex flex-col gap-2 tablet:flex-row tablet:items-center tablet:justify-self-end tablet:gap-6"
     >
-      Resume
-    </a>
+      <a
+        href={LINKEDIN}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-semibold transition-colors hover:text-orange"
+      >
+        LinkedIn
+      </a>
+      <a
+        href={RESUME}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-semibold transition-colors hover:text-orange"
+      >
+        Resume
+      </a>
+    </div>
   </div>
 </footer>
