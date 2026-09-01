@@ -16,12 +16,20 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
   data-header
   class="fixed inset-x-0 top-0 z-50 flex items-start justify-between gap-gutter px-[calc(var(--spacing-gutter)+0.75rem)] pt-gutter pb-5"
 >
-  <!-- Mobile stacks name over role; tablet and up sit them on one baseline. -->
+  <!-- Two lines on mobile, one from tablet up.
+
+       On one line the title and the nav together need more width than a phone
+       has, and the loser is the nav: the toggle ends up jammed against the
+       right edge. Breaking the title instead costs nothing — the header is out
+       of flow and its height is measured at runtime, so the pages below follow
+       it — and the break is placed by hand rather than left to the wrap, since
+       the ampersand belongs with the word it joins. -->
   <div class="flex flex-col tablet:flex-row tablet:items-baseline tablet:gap-3">
     <a
       href="/"
       data-anim="header-item"
-      class="text-body font-semibold whitespace-nowrap">UX Designer &amp; Developer</a
+      class="text-body font-semibold tablet:whitespace-nowrap"
+      >UX Designer <br class="tablet:hidden" />&amp; Developer</a
     >
   </div>
 

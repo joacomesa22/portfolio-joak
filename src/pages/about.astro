@@ -36,10 +36,16 @@ import joaco from "../assets/img/joaco.jpg";
     <!-- Side by side rather than one column, so neither paragraph runs the full
          width of the page. auto-fit drops to one column when two would squeeze
          the measure — a content-driven break, so it costs no extra breakpoint —
-         and the max-width keeps that single column readable too. -->
+         and the max-width keeps that single column readable too.
+
+         The track floor is `min(28rem, 100%)`, not a bare 28rem: auto-fit will
+         happily lay a track wider than its container, so on a phone a flat
+         28rem floor is a 448px column in a 375px viewport, and the copy runs
+         off the right edge. `min()` lets the floor collapse to the container
+         once there is less than 28rem to give it. -->
     <section
       data-group
-      class="grid grid-cols-[repeat(auto-fit,minmax(28rem,1fr))] gap-6 px-gutter pb-section-md text-body-lg desktop:gap-16 [&>p]:max-w-[38rem]"
+      class="grid grid-cols-[repeat(auto-fit,minmax(min(28rem,100%),1fr))] gap-6 px-gutter pb-section-md text-body-lg desktop:gap-16 [&>p]:max-w-[38rem]"
     >
       <p data-anim="item">
         With a degree in Digital Communication and professional training in
