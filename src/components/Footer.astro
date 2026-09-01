@@ -31,11 +31,11 @@ import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
         href={LINKEDIN}
         target="_blank"
         rel="noopener noreferrer"
-        class="font-semibold hover:text-darkin-muted"
+        class="font-semibold transition-colors hover:text-orange"
       >
         LinkedIn
       </a>
-      <a href={`mailto:${EMAIL}`} class="font-semibold hover:text-darkin-muted">
+      <a href={`mailto:${EMAIL}`} class="font-semibold transition-colors hover:text-orange">
         {EMAIL}
       </a>
     </div>
@@ -53,7 +53,7 @@ import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
             href={s.href}
             target="_blank"
             rel="noopener noreferrer"
-            class="text-darkin transition-colors hover:text-darkin-muted"
+            class="text-darkin transition-colors hover:text-orange"
             aria-label={s.label}
           >
             <svg class="h-5 w-5" fill="currentColor" aria-hidden="true">
@@ -69,7 +69,7 @@ import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
       data-anim="item"
       target="_blank"
       rel="noopener noreferrer"
-      class="font-semibold hover:text-darkin-muted tablet:justify-self-end"
+      class="font-semibold transition-colors hover:text-orange tablet:justify-self-end"
     >
       Resume
     </a>
