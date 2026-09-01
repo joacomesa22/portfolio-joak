@@ -24,10 +24,39 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#FFFFFF" />
+    <!-- Kept in sync with the active theme by theme.ts; the value here is only
+         what the light palette resolves to. -->
+    <meta name="theme-color" content="#ffffff" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <ClientRouter />
+
+    <!-- Resolves the theme before the body paints, so a dark-mode visitor never
+         gets a white flash. Deliberately not a module and deliberately ahead of
+         everything else in <head>: it has to run now, synchronously. theme.ts
+         owns every later change; this only sets the opening state.
+         The storage key is shared with theme.ts — change both together. -->
+    <script is:inline>
+      (function () {
+        var stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch (e) {
+          /* private mode; fall through to the OS preference */
+        }
+        var theme =
+          stored === "light" || stored === "dark"
+            ? stored
+            : matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        document.documentElement.dataset.theme = theme;
+        if (theme === "dark") {
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.content = "#001621";
+        }
+      })();
+    </script>
 
     <!-- Marks the document as animatable before first paint, so animated
          elements are hidden from the very first frame instead of flashing at
@@ -64,6 +93,24 @@ const {
       import { initAnimations, destroyAnimations } from "../scripts/animations";
       import { initHeader, destroyHeader } from "../scripts/header";
       import { initCursor, destroyCursor } from "../scripts/cursor";
+      import { initTheme, destroyTheme } from "../scripts/theme";
+
+      // Duplicates what initTheme does, because after-swap fires ahead of
+      // page-load and the new DOM must not paint in the old theme first.
+      function restoreTheme() {
+        var stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch (e) {
+          /* private mode */
+        }
+        document.documentElement.dataset.theme =
+          stored === "light" || stored === "dark"
+            ? stored
+            : matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+      }
 
       // With the router in play this module runs once, not per page, so the
       // lifecycle events drive it: tear Lenis and the ScrollTriggers down before
@@ -74,6 +121,7 @@ const {
         destroySmoothScroll();
         destroyHeader();
         destroyCursor();
+        destroyTheme();
       });
 
       // The swap replaces <html>'s attributes, so the class the inline script
@@ -85,9 +133,15 @@ const {
         if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
           document.documentElement.classList.add("anim", "navigated");
         }
+        // Same reason as the class above: the swap wipes <html>'s attributes,
+        // and data-theme is one of them. Restoring it here rather than in
+        // initTheme keeps the theme from flashing during the transition.
+        restoreTheme();
       });
 
       document.addEventListener("astro:page-load", () => {
+        // First, so the page it renders into is already the right theme.
+        initTheme();
         initSmoothScroll();
         initHeader();
         initCursor();

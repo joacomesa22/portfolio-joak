@@ -32,11 +32,32 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
           href={link.href}
           data-anim="header-item"
           aria-current={link.href === path ? "page" : undefined}
-          class="text-body font-semibold hover:text-darkin-muted aria-[current=page]:text-darkin-muted"
+          class="text-body font-semibold hover:text-orange aria-[current=page]:text-darkin-muted"
         >
           {link.label}
         </a>
       ))
     }
+
+    <!-- Sits with the nav links rather than apart from them: it is one more way
+         to change what you are looking at. No label — the pair of glyphs is the
+         whole vocabulary, and a word here would outweigh "About" and "Work".
+
+         Hidden until JS resolves a theme, since without JS there is nothing to
+         toggle; `visibility` rather than `display` so the nav never reflows. -->
+    <button
+      type="button"
+      data-theme-toggle
+      data-anim="header-item"
+      aria-label="Switch theme"
+      class="self-center text-darkin transition-colors hover:text-orange"
+    >
+      <svg class="h-5 w-5" aria-hidden="true" data-theme-icon="sun">
+        <use href="#icon-sun" />
+      </svg>
+      <svg class="h-5 w-5" aria-hidden="true" data-theme-icon="moon">
+        <use href="#icon-moon" />
+      </svg>
+    </button>
   </nav>
 </header>

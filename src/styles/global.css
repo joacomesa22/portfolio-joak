@@ -21,30 +21,38 @@
   --breakpoint-desktop: 1024px;
 
   /* ------------------------------------------------------------------
-     COLOR — two brand colors on white
+     COLOR — two brand colors, one palette, two modes
 
-     Darkin  #001621 — primary. Every mark on the page: text, borders,
-                       fills. The muted and hairline steps below are this
-                       same hue diluted, not neutral greys, so the page
-                       reads as one blue-black family rather than a tinted
-                       black.
-     Orange  #ff4103 — secondary. Punctuation only: selection, focus ring,
-                       cursor. Never a surface — that is what keeps the
-                       page from reading as saturated.
+     The tokens below are aliases, not literals: each one points at a role
+     variable defined under BASE, and the light and dark palettes swap those
+     roles. That keeps every utility in the markup (`bg-white`, `text-darkin`,
+     `border-hairline`) working untouched in both modes, and keeps the
+     palettes readable side by side in one place instead of scattered across
+     `dark:` variants.
+
+     The names still describe the light palette because that is the site's
+     default and its identity. Read them as roles:
+
+       white       page surface        (dark: Darkin itself)
+       off-white   recessed surface    — one small step off the page
+       darkin      ink: text, borders, fills
+       darkin-muted secondary copy, captions
+       hairline    rules, dividers, card borders
+       orange      punctuation only: link hover, selection, focus ring, cursor
+
+     Dark mode is not an inversion to black. The page surface becomes Darkin
+     #001621 — the brand color itself — and the ink becomes a pale wash of the
+     same blue, so both modes read as one blue-black family rather than two
+     unrelated themes. Orange lifts a step (#ff5c26) because #ff4103 loses its
+     bite against a dark ground.
      ------------------------------------------------------------------ */
   --color-*: initial;
-  --color-white: #ffffff;
-  /* page background */
-  --color-off-white: #f4f6f7;
-  /* alternating / recessed sections — darkin at ~4% */
-  --color-darkin: #001621;
-  /* primary text, borders, fills */
-  --color-darkin-muted: #5c6a71;
-  /* secondary copy, captions */
-  --color-hairline: #dfe4e6;
-  /* rules, dividers, card borders */
-  --color-orange: #ff4103;
-  /* secondary — selection, focus, cursor. Not for large fills. */
+  --color-white: var(--paper);
+  --color-off-white: var(--paper-sunk);
+  --color-darkin: var(--ink);
+  --color-darkin-muted: var(--ink-muted);
+  --color-hairline: var(--rule);
+  --color-orange: var(--accent);
 
   --color-transparent: transparent;
   --color-current: currentColor;
@@ -112,6 +120,57 @@
   :root {
     /* Overwritten with the measured height as soon as JS runs. */
     --header-h: 5.5rem;
+
+    /* Light palette — the default, and the site's identity. */
+    color-scheme: light;
+    --paper: #ffffff;
+    --paper-sunk: #f4f6f7;
+    --ink: #001621;
+    --ink-muted: #5c6a71;
+    --rule: #dfe4e6;
+    --accent: #ff4103;
+  }
+
+  /* Dark palette.
+     Written once and applied from two places: the media query is the no-JS and
+     first-paint answer, the attribute is the explicit choice. `:not([data-theme="light"])`
+     is what lets someone on a dark OS still pick light and have it stick. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #001621;
+      --paper-sunk: #04202d;
+      --ink: #eaf0f2;
+      --ink-muted: #8ea0a8;
+      --rule: #123240;
+      --accent: #ff5c26;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #001621;
+    --paper-sunk: #04202d;
+    --ink: #eaf0f2;
+    --ink-muted: #8ea0a8;
+    --rule: #123240;
+    --accent: #ff5c26;
+  }
+
+  /* Colors are otherwise untransitioned — a theme switch that repaints
+     instantly reads as a glitch, so the swap gets a brief crossfade and then
+     the class comes straight back off. Only the properties that actually
+     change are listed, so nothing else in the page is slowed down.
+     `[data-header]`'s transform and the cursor's own transitions are untouched. */
+  html[data-theme-switching] *,
+  html[data-theme-switching] *::before,
+  html[data-theme-switching] *::after {
+    transition:
+      background-color 0.35s ease,
+      border-color 0.35s ease,
+      color 0.35s ease,
+      fill 0.35s ease,
+      outline-color 0.35s ease;
   }
 
   html {
@@ -209,6 +268,50 @@
   }
 
   /**
+   * Theme toggle.
+   *
+   * Both glyphs occupy the same grid cell and cross-fade through a quarter
+   * turn, so the button never changes size and the swap reads as one mark
+   * turning over rather than two icons trading places.
+   *
+   * The visible glyph is the destination, not the current state: moon while the
+   * page is light, sun while it is dark.
+   */
+  [data-theme-toggle] {
+    display: grid;
+    place-items: center;
+    /* Nothing to toggle before JS resolves a theme. `visibility` keeps the
+       nav's spacing identical either way. */
+    visibility: hidden;
+  }
+
+  html[data-theme] [data-theme-toggle] {
+    visibility: visible;
+  }
+
+  [data-theme-toggle] > svg {
+    grid-area: 1 / 1;
+    transition:
+      opacity 0.25s ease,
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  [data-theme-icon="sun"] {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+  }
+
+  html[data-theme="dark"] [data-theme-icon="sun"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  html[data-theme="dark"] [data-theme-icon="moon"] {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.6);
+  }
+
+  /**
    * Full-bleed hero name.
    *
    * The size is a pure `vw` coefficient rather than a clamp: because the string
@@ -285,12 +388,14 @@
    ========================================================================== */
 
 [data-header] a,
-[data-header] p {
+[data-header] p,
+[data-header] button {
   transition: color 0.3s ease;
 }
 
 [data-header][data-over-media] a,
-[data-header][data-over-media] p {
+[data-header][data-over-media] p,
+[data-header][data-over-media] button {
   color: #fff;
 }
 
@@ -300,7 +405,8 @@
 }
 
 /* Without this the nav would lose its hover response entirely while inverted. */
-[data-header][data-over-media] a:hover {
+[data-header][data-over-media] a:hover,
+[data-header][data-over-media] button:hover {
   color: rgb(255 255 255 / 0.7);
 }
 
