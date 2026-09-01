@@ -12,7 +12,7 @@ const projects = (await getCollection("projects")).sort(
       href="https://zil.global/design/"
       target="_blank"
       rel="noopener noreferrer"
-      class="font-sans font-semibold transition-colors duration-300 hover:text-ink-muted"
+      class="font-sans font-semibold transition-colors duration-300 hover:text-darkin-muted"
       >Zil Design</a
     >.
   </p>
@@ -31,7 +31,7 @@ const projects = (await getCollection("projects")).sort(
             <div
               data-header-invert
               data-project-card
-              class="overflow-hidden rounded-lg bg-paper-alt"
+              class="overflow-hidden rounded-lg bg-off-white"
             >
               <img
                 src={project.data.image.src}
@@ -45,7 +45,7 @@ const projects = (await getCollection("projects")).sort(
           )}
           <div class="mt-4">
             <h3 class="text-body-lg font-semibold">{project.data.title}</h3>
-            <p class="mt-1 text-body text-ink-muted">{project.data.description}</p>
+            <p class="mt-1 text-body text-darkin-muted">{project.data.description}</p>
           </div>
         </a>
       ))

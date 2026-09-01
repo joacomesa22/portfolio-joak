@@ -21,28 +21,30 @@
   --breakpoint-desktop: 1024px;
 
   /* ------------------------------------------------------------------
-     COLOR — white paper, deep blue-black ink, orange accent
+     COLOR — two brand colors on white
 
-     Two brand colors only: #001621 (primary) and #ff4103 (secondary).
-     White carries the page so neither one has to compete for it; the
-     orange is a punctuation mark, never a surface.
+     Darkin  #001621 — primary. Every mark on the page: text, borders,
+                       fills. The muted and hairline steps below are this
+                       same hue diluted, not neutral greys, so the page
+                       reads as one blue-black family rather than a tinted
+                       black.
+     Orange  #ff4103 — secondary. Punctuation only: selection, focus ring,
+                       cursor. Never a surface — that is what keeps the
+                       page from reading as saturated.
      ------------------------------------------------------------------ */
   --color-*: initial;
-  --color-paper: #ffffff;
+  --color-white: #ffffff;
   /* page background */
-  --color-paper-alt: #f4f6f7;
-  /* alternating / recessed sections — ink at ~4% */
-  --color-ink: #001621;
+  --color-off-white: #f4f6f7;
+  /* alternating / recessed sections — darkin at ~4% */
+  --color-darkin: #001621;
   /* primary text, borders, fills */
-  --color-ink-muted: #5c6a71;
-  /* secondary copy, captions — ink desaturated, not a neutral grey */
-  --color-rule: #dfe4e6;
-  /* hairlines, dividers, card borders */
-  --color-accent: #ff4103;
+  --color-darkin-muted: #5c6a71;
+  /* secondary copy, captions */
+  --color-hairline: #dfe4e6;
+  /* rules, dividers, card borders */
+  --color-orange: #ff4103;
   /* secondary — selection, focus, cursor. Not for large fills. */
-
-  --color-accent-ink: #ffffff;
-  /* the only text color that clears contrast on top of the accent */
 
   --color-transparent: transparent;
   --color-current: currentColor;
@@ -119,8 +121,8 @@
   }
 
   body {
-    background-color: var(--color-paper);
-    color: var(--color-ink);
+    background-color: var(--color-white);
+    color: var(--color-darkin);
     font-family: var(--font-sans);
     font-size: var(--text-body);
     line-height: 1.6;
@@ -137,12 +139,12 @@
   }
 
   ::selection {
-    background-color: var(--color-accent);
-    color: var(--color-accent-ink);
+    background-color: var(--color-orange);
+    color: var(--color-white);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-orange);
     outline-offset: 3px;
   }
 
@@ -279,7 +281,7 @@
 
    Deliberately unlayered. Tailwind's utilities layer outranks every @layer
    regardless of specificity, so from inside `components` these could never beat
-   `text-ink-muted` on the role line or `hover:text-ink-muted` on the nav.
+   `text-darkin-muted` on the role line or `hover:text-darkin-muted` on the nav.
    ========================================================================== */
 
 [data-header] a,
@@ -318,8 +320,8 @@
   width: 10px;
   height: 10px;
   border-radius: 9999px;
-  background: var(--color-accent);
-  color: var(--color-accent);
+  background: var(--color-orange);
+  color: var(--color-orange);
   pointer-events: none;
   /* never steals a click or a hover */
   opacity: 0;
@@ -354,7 +356,7 @@
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.03em;
-  color: var(--color-accent-ink);
+  color: var(--color-white);
   opacity: 0;
   transform: translateY(4px);
   transition: opacity 0.2s ease, transform 0.25s ease;

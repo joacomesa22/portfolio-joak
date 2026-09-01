@@ -13,7 +13,7 @@ import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
   </h2>
 
   <!-- A real element rather than a border, so it can be drawn left to right. -->
-  <div data-anim="rule" class="mt-section-sm h-px w-full bg-rule"></div>
+  <div data-anim="rule" class="mt-section-sm h-px w-full bg-hairline"></div>
 
   <!-- Three equal columns rather than justify-between: with space-between the
        middle item only lands centred when the outer two happen to match in
@@ -31,11 +31,11 @@ import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
         href={LINKEDIN}
         target="_blank"
         rel="noopener noreferrer"
-        class="font-semibold hover:text-ink-muted"
+        class="font-semibold hover:text-darkin-muted"
       >
         LinkedIn
       </a>
-      <a href={`mailto:${EMAIL}`} class="font-semibold hover:text-ink-muted">
+      <a href={`mailto:${EMAIL}`} class="font-semibold hover:text-darkin-muted">
         {EMAIL}
       </a>
     </div>
@@ -53,7 +53,7 @@ import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
             href={s.href}
             target="_blank"
             rel="noopener noreferrer"
-            class="text-ink transition-colors hover:text-ink-muted"
+            class="text-darkin transition-colors hover:text-darkin-muted"
             aria-label={s.label}
           >
             <svg class="h-5 w-5" fill="currentColor" aria-hidden="true">
@@ -69,7 +69,7 @@ import { EMAIL, LINKEDIN, RESUME, SOCIALS } from "../data/socials";
       data-anim="item"
       target="_blank"
       rel="noopener noreferrer"
-      class="font-semibold hover:text-ink-muted tablet:justify-self-end"
+      class="font-semibold hover:text-darkin-muted tablet:justify-self-end"
     >
       Resume
     </a>
