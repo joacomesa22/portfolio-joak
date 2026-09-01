@@ -21,21 +21,28 @@
   --breakpoint-desktop: 1024px;
 
   /* ------------------------------------------------------------------
-     COLOR — warm off-white paper, near-black ink
+     COLOR — white paper, deep blue-black ink, orange accent
+
+     Two brand colors only: #001621 (primary) and #ff4103 (secondary).
+     White carries the page so neither one has to compete for it; the
+     orange is a punctuation mark, never a surface.
      ------------------------------------------------------------------ */
   --color-*: initial;
-  --color-paper: #f2f1ec;
+  --color-paper: #ffffff;
   /* page background */
-  --color-paper-alt: #efece6;
-  /* alternating / recessed sections */
-  --color-ink: #111111;
+  --color-paper-alt: #f4f6f7;
+  /* alternating / recessed sections — ink at ~4% */
+  --color-ink: #001621;
   /* primary text, borders, fills */
-  --color-ink-muted: #6b6862;
-  /* secondary copy, captions */
-  --color-rule: #d8d5cd;
+  --color-ink-muted: #5c6a71;
+  /* secondary copy, captions — ink desaturated, not a neutral grey */
+  --color-rule: #dfe4e6;
   /* hairlines, dividers, card borders */
-  --color-accent: #db8a3f;
-  /* carried from the previous brand — see note */
+  --color-accent: #ff4103;
+  /* secondary — selection, focus, cursor. Not for large fills. */
+
+  --color-accent-ink: #ffffff;
+  /* the only text color that clears contrast on top of the accent */
 
   --color-transparent: transparent;
   --color-current: currentColor;
@@ -130,12 +137,12 @@
   }
 
   ::selection {
-    background-color: var(--color-ink);
-    color: var(--color-paper);
+    background-color: var(--color-accent);
+    color: var(--color-accent-ink);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-ink);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
   }
 
@@ -311,8 +318,8 @@
   width: 10px;
   height: 10px;
   border-radius: 9999px;
-  background: var(--color-ink);
-  color: var(--color-ink);
+  background: var(--color-accent);
+  color: var(--color-accent);
   pointer-events: none;
   /* never steals a click or a hover */
   opacity: 0;
@@ -347,7 +354,7 @@
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.03em;
-  color: var(--color-paper);
+  color: var(--color-accent-ink);
   opacity: 0;
   transform: translateY(4px);
   transition: opacity 0.2s ease, transform 0.25s ease;
