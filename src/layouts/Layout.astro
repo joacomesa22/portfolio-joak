@@ -1,6 +1,10 @@
 ---
 import "@fontsource-variable/onest";
 import "@fontsource/instrument-serif/400.css";
+// The two faces the first screen actually renders in, imported for their URLs
+// so they can be preloaded below. See the <link rel="preload"> pair in <head>.
+import onestLatin from "@fontsource-variable/onest/files/onest-latin-wght-normal.woff2?url";
+import serifLatin from "@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url";
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import IconSprite from "../components/IconSprite.astro";
@@ -24,6 +28,15 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+
+    <!-- Both faces are `font-display: swap`, and without this the browser only
+         learns they exist after the stylesheet has parsed — a second round trip
+         during which the page is drawn in a fallback. Preloading them alongside
+         the stylesheet collapses that window; the metric-matched fallbacks in
+         global.css cover whatever is left of it. Latin only: the other subsets
+         are not on the first screen and can load normally. -->
+    <link rel="preload" as="font" type="font/woff2" href={onestLatin} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={serifLatin} crossorigin />
     <!-- Kept in sync with the active theme by theme.ts; the value here is only
          what the light palette resolves to. -->
     <meta name="theme-color" content="#ffffff" />

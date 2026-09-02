@@ -60,8 +60,8 @@
   /* ------------------------------------------------------------------
      TYPOGRAPHY — Onest, single family
      ------------------------------------------------------------------ */
-  --font-sans: "Onest Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "Onest Variable", "Onest Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Instrument Serif", "Instrument Serif Fallback", ui-serif, Georgia, serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   /* Fluid scale, locked between 375px and 1440px viewports.
@@ -110,6 +110,42 @@
   /* 1200px — standard section width */
   --container-prose: 42rem;
   /* 672px  — readable measure */
+}
+
+/* ==========================================================================
+   FONT FALLBACKS
+
+   Both webfonts load with `font-display: swap`, so the first paint of a hard
+   refresh is always drawn in a fallback. Left to the browser's own Arial and
+   Times that first frame is badly wrong: Instrument Serif is ~21% narrower
+   than Times, so the display headline overflows the viewport before snapping
+   back, and Onest is ~3% wider than Arial. These two faces are the same local
+   fallbacks re-declared with Onest's and Instrument Serif's metrics, so the
+   pre-swap frame occupies the same space as the real thing and the swap stops
+   moving the layout.
+
+   The numbers are ratios measured against the real fonts at the same size:
+   `size-adjust` is webfont-width / fallback-width, and the ascent and descent
+   overrides are the webfont's own ratios divided by that same size-adjust,
+   since overrides apply to the already-adjusted em.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Onest Fallback";
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 103.25%;
+  ascent-override: 93.95%;
+  descent-override: 29.54%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Instrument Serif Fallback";
+  src: local("Times New Roman"), local("Times"), local("Liberation Serif");
+  size-adjust: 78.96%;
+  ascent-override: 125.38%;
+  descent-override: 39.26%;
+  line-gap-override: 0%;
 }
 
 /* ==========================================================================
