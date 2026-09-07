@@ -472,22 +472,30 @@
   opacity: 1;
 }
 
+/* Sized by its own label rather than to a fixed width: the text differs per
+   card, and a fixed pill either clips the long one or leaves the short one
+   swimming. The transition covers width, so it still grows out of the dot. */
 [data-cursor][data-hovering] {
-  width: 120px;
+  width: auto;
   height: 40px;
+  padding: 0 1.15rem;
   border-radius: 9999px;
   transform: translate(-50%, -50%) scale(1);
 }
 
-[data-cursor-label] {
+[data-cursor] [data-cursor-label] {
   display: inline-flex;
+  white-space: nowrap;
   align-items: center;
   justify-content: center;
   font-size: 0.92rem;
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.03em;
-  color: var(--color-white);
+  /* Literal white, not the paper role: the pill is always orange, in both
+     themes, so its text must not follow the palette — paper turns near-black
+     in dark mode and the label goes ink-on-orange. */
+  color: #fff;
   opacity: 0;
   transform: translateY(4px);
   transition: opacity 0.2s ease, transform 0.25s ease;

@@ -9,7 +9,9 @@ const projects = defineCollection({
       description: z.string(),
       image: image().optional(),
       imageAlt: z.string().optional(),
-      link: z.string().url(),
+      // Absent for projects that have a case study page of their own: the card
+      // then points at /work/<id> instead of straight out to the live site.
+      link: z.string().url().optional(),
       order: z.number(),
     }),
 });

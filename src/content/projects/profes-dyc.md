@@ -1,0 +1,7 @@
+---
+title: ProfesDyC
+description: A web platform where students at my university rate and review their professors, so the next intake picks their courses on something better than hearsay.
+image: ../../assets/img/profesdyc/placeholder.svg
+imageAlt: ProfesDyC
+order: 6
+---

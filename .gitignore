@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Guard: astro/pnpm scaffold these wherever they are run from, and a stray `cd`
+# into an asset folder has twice left a copy of them under src/.
+src/**/.astro/
+src/**/dist/
+src/**/node_modules/

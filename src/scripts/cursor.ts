@@ -9,11 +9,12 @@ import { gsap } from "gsap";
  */
 
 let dot: HTMLElement | null = null;
+let label: HTMLElement | null = null;
 let projectCards: HTMLElement[] = [];
 let onMove: ((event: PointerEvent) => void) | null = null;
 let onEnter: (() => void) | null = null;
 let onLeave: (() => void) | null = null;
-let onProjectEnter: (() => void) | null = null;
+let onProjectEnter: ((event: PointerEvent) => void) | null = null;
 let onProjectLeave: (() => void) | null = null;
 
 export function initCursor(): void {
@@ -26,6 +27,7 @@ export function initCursor(): void {
 
   dot = document.querySelector<HTMLElement>("[data-cursor]");
   if (!dot) return;
+  label = dot.querySelector<HTMLElement>("[data-cursor-label]");
 
   // Centre the dot on the pointer once, so the tweens only ever touch x/y.
   gsap.set(dot, { xPercent: -50, yPercent: -50 });
@@ -44,7 +46,13 @@ export function initCursor(): void {
   };
   onEnter = () => dot?.setAttribute("data-visible", "");
   onLeave = () => dot?.removeAttribute("data-visible");
-  onProjectEnter = () => dot?.setAttribute("data-hovering", "");
+  // The label is the card's own: a case study is read, a live site is visited,
+  // and the pill should not promise one and open the other.
+  onProjectEnter = (event) => {
+    const card = event.currentTarget as HTMLElement;
+    if (label) label.textContent = card.dataset.cardLabel ?? "View Work";
+    dot?.setAttribute("data-hovering", "");
+  };
   onProjectLeave = () => dot?.removeAttribute("data-hovering");
 
   projectCards = Array.from(
@@ -74,4 +82,5 @@ export function destroyCursor(): void {
   projectCards = [];
   if (dot) gsap.killTweensOf(dot);
   dot = null;
+  label = null;
 }

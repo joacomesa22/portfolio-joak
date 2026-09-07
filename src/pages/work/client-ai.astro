@@ -1,0 +1,1211 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Footer from "../../components/Footer.astro";
+import macDock from "../../assets/img/client-ai/ios2.png";
+import dash from "../../assets/img/client-ai/dash.png";
+import login from "../../assets/img/client-ai/login.png";
+import Empathize from "../../assets/img/client-ai/empathize.svg";
+import Define from "../../assets/img/client-ai/define.svg";
+import Ideate from "../../assets/img/client-ai/ideate.svg";
+import Prototype from "../../assets/img/client-ai/prototype.svg";
+import Test from "../../assets/img/client-ai/test.svg";
+import sketch1 from "../../assets/img/client-ai/sketch.jpg";
+import sketch2 from "../../assets/img/client-ai/sketch2.jpg";
+import sketch3 from "../../assets/img/client-ai/sketch3.jpg";
+import sketch4 from "../../assets/img/client-ai/sketch4.jpg";
+import wireframes from "../../assets/img/client-ai/wireframes.png";
+import mockups from "../../assets/img/client-ai/mockups.png";
+import MazeLogo from "../../assets/img/client-ai/maze-logo.svg";
+import Isotipo from "../../assets/img/client-ai/isotipo.svg";
+import Imagotipo from "../../assets/img/client-ai/imagotipo.svg";
+// The two faces the app itself is set in, at the only weights the kit uses.
+// Loaded here rather than in the layout: they exist for one block on one page,
+// and a type specimen set in the wrong typeface is not a specimen.
+import "@fontsource/poppins/600.css";
+import "@fontsource/montserrat/500.css";
+import "@fontsource/montserrat/600.css";
+import heatmap1 from "../../assets/img/client-ai/heatmap1.png";
+import heatmap2 from "../../assets/img/client-ai/heatmap2.png";
+import heatmap3 from "../../assets/img/client-ai/heatmap3.png";
+import heatmap4 from "../../assets/img/client-ai/heatmap4.png";
+
+// Shown as a rule-separated line under the title rather than as tags: the site
+// has no pill or chip anywhere, and inventing one for a single line of metadata
+// would cost more than it says.
+const meta = ["UX Research", "UI Design", "Prototyping", "Mobile App"];
+
+// The five steps ride a stagger at desktop the way the deck lays them out —
+// alternating, so the row reads as a process rather than as five equal tiles.
+// Survey results, redrawn rather than screenshotted so they carry the site's
+// own ink and respond to the dark palette. The shares are read off the original
+// charts — replace them with the exact figures from the form's own export.
+//
+// Color is doing no categorical work here: this palette is one ink and one
+// accent, so identity rides on the labels, which every bar and slice carries,
+// and orange is spent on the single value each chart exists to make.
+const purpose = {
+  question: "For what purpose have you used chatbots?",
+  answers: 94,
+  bars: [
+    { label: "Resolve doubts about a product or service", value: 52, lead: true },
+    { label: "Buy products", value: 13 },
+    { label: "Create an account", value: 13 },
+    { label: "Schedule an appointment", value: 11 },
+    { label: "Never used one / don't know", value: 11 },
+  ],
+};
+
+const satisfaction = {
+  question:
+    "How satisfied are you with the experience of using chatbots to interact with companies, stores or services?",
+  answers: 77,
+  bars: [
+    { label: "1", value: 26 },
+    { label: "2", value: 26 },
+    { label: "3", value: 33, lead: true },
+    { label: "4", value: 15 },
+    { label: "5", value: 0 },
+  ],
+};
+
+const frustration = {
+  question: "Have you ever felt frustrated by a chatbot malfunctioning?",
+  slices: [
+    { label: "Many times", value: 40, lead: true },
+    { label: "Some times", value: 40 },
+    { label: "Never", value: 13 },
+    { label: "Never used one", value: 7 },
+  ],
+};
+
+// One ring, drawn as four arcs on a single circle: each slice is a dash the
+// length of its share of the circumference, offset by everything before it. The
+// 1.5 taken off every dash is the 2px gap the marks need between them.
+// Both bar charts are drawn against their own largest value rather than
+// against 100, so the plot is actually used; the printed number carries the
+// real share, which is what the reader is here for.
+const purposeMax = Math.max(...purpose.bars.map((b) => b.value));
+const satisfactionMax = Math.max(...satisfaction.bars.map((b) => b.value));
+
+const RING = 2 * Math.PI * 42;
+let sweep = 0;
+const ringSlices = frustration.slices.map((slice) => {
+  const arc = (slice.value / 100) * RING;
+  const seg = { ...slice, dash: `${Math.max(arc - 1.5, 0)} ${RING - arc + 1.5}`, offset: -sweep };
+  sweep += arc;
+  return seg;
+});
+
+const sketches = [sketch1, sketch2, sketch3, sketch4];
+
+
+// Unmoderated test results, per task. Success and failure are the two outcomes
+// the test recorded; a quit is a failure the user didn't stay to finish, so it
+// is counted inside the failures rather than beside them.
+const tasks = [
+  { name: "Task 1", success: 18, fail: 6, quit: 0 },
+  { name: "Task 2", success: 10, fail: 2, quit: 4 },
+  { name: "Task 3", success: 16, fail: 6, quit: 4 },
+];
+
+const heatmaps = [
+  { src: heatmap1, alt: "Heatmap of the dashboard" },
+  { src: heatmap2, alt: "Heatmap of the tone-of-voice settings screen" },
+  { src: heatmap3, alt: "Heatmap of the bot naming screen" },
+  { src: heatmap4, alt: "Heatmap of the new bot form" },
+];
+
+const mazeCaptures = [
+  "Task success rates",
+  "Time spent on each screen",
+  "Device used for the test",
+  "Heatmaps",
+];
+
+// The app's own palette, printed as it ships. This is the one block on the
+// page whose color is the subject rather than the styling, so the site's ink
+// and accent step aside for it.
+const palette = [
+  { hex: "#BCBBFF", ink: "#0D0D0D" },
+  { hex: "#F2F2F2", ink: "#0D0D0D" },
+  { hex: "#0D0D0D", ink: "#F2F2F2" },
+  { hex: "#9CFFC1", ink: "#0D0D0D" },
+  { hex: "#F32828", ink: "#F2F2F2" },
+];
+
+const typefaces = [
+  {
+    name: "Poppins",
+    role: "Titles, subtitles",
+    detail: "Semibold · 32px",
+    family: "'Poppins', sans-serif",
+    weight: 600,
+  },
+  {
+    name: "Montserrat",
+    role: "Paragraphs, buttons",
+    detail: "Semibold, Medium · 26 / 20 / 16 / 14px",
+    family: "'Montserrat', sans-serif",
+    weight: 600,
+  },
+];
+
+
+const steps = [
+  { label: "Empathize", icon: Empathize },
+  { label: "Define", icon: Define },
+  { label: "Ideate", icon: Ideate },
+  { label: "Prototype", icon: Prototype },
+  { label: "Test", icon: Test },
+];
+---
+
+<Layout
+  title="Client AI — Joaquín Mesa"
+  description="Case study: an AI customer-support assistant for small e-commerce teams, from research through high-fidelity UI."
+>
+  <!-- The case study runs long and is mostly text and diagrams, so it is held
+       to the standard section width rather than the page shell: at 1600px the
+       full-bleed measure turns every paragraph into a line you have to track
+       back across. The gutter sits outside that width, so the content itself
+       stops at 1200. -->
+  <main class="mx-auto w-full max-w-[calc(var(--container-content)+2*var(--spacing-gutter))] pt-[var(--header-h)]">
+    <!-- Lead. Same shape as the About page's opening: the display face carries
+         the name, and the sentence under it sits at a readable measure instead
+         of running the full page. -->
+    <section class="px-gutter pt-section-sm pb-gutter">
+      <h1 data-anim="lines" class="font-display text-display">Client AI</h1>
+
+      <div
+        data-group
+        class="mt-gutter flex flex-col gap-6 desktop:flex-row desktop:items-start desktop:justify-between desktop:gap-16"
+      >
+        <p data-anim="item" class="max-w-prose text-body-lg">
+          Customizable AI chatbots that let small and medium-sized businesses
+          answer their customers in seconds instead of hours.
+        </p>
+
+        <ul
+          data-anim="item"
+          class="flex flex-wrap gap-x-6 gap-y-2 text-meta tracking-[0.08em] text-darkin-muted uppercase desktop:max-w-[18rem] desktop:flex-col desktop:gap-y-3"
+        >
+          {meta.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Stage. No surface behind it: the renders are cut-outs, and they sit on
+         the page itself rather than on a panel. Nothing here inverts the header
+         any more, so it keeps its ink over the whole hero. -->
+    <!-- A gutter's worth of air, not a section's: without the panel the renders
+         need separating from the copy above and the statement below, but the
+         full section rhythm on top of the neighbours' own padding left the
+         stage marooned. -->
+    <section class="px-gutter py-gutter">
+      <div data-anim="card" class="relative">
+        <div
+          class="grid items-center gap-gutter desktop:grid-cols-2 desktop:items-stretch"
+        >
+          <!-- One card, filling its half of the stage: the app's mark sitting
+               in the macOS dock, which says "this shipped" in a way an icon on
+               its own does not. It matches the phones' height rather than
+               setting its own, so the two halves stay level. -->
+          <div class="overflow-hidden rounded-lg border-4 border-[#dfe4e6] bg-[#f4f6f7] desktop:h-full">
+            <img
+              src={macDock.src}
+              width={macDock.width}
+              height={macDock.height}
+              alt="Client AI pinned in the macOS dock"
+              class="aspect-16/11 w-full object-cover object-[right_bottom] desktop:aspect-auto desktop:h-full"
+            />
+          </div>
+
+          <!-- The two screens overlap the way they do in the case study: the
+               dashboard in front and a step lower, the login behind it. One
+               relative box, so the overlap is a percentage of the pair and
+               holds from phone to desktop. -->
+          <div class="relative mx-auto flex w-full max-w-[34rem] items-center justify-center desktop:max-w-none">
+            <img
+              src={dash.src}
+              width={dash.width}
+              height={dash.height}
+              alt="Client AI dashboard: total messages, a breakdown of what customers ask about, and weekly activity"
+              class="relative z-10 w-[52%] translate-y-[4%] desktop:w-[56%]"
+            />
+            <img
+              src={login.src}
+              width={login.width}
+              height={login.height}
+              alt="Client AI sign-in screen"
+              class="-ml-[14%] w-[52%] -translate-y-[4%] desktop:w-[56%]"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About / Problem / Goal.
+         The source deck puts all three in outlined boxes of equal weight. Here
+         the statement is not a box at all — it is the display voice the rest of
+         the site uses to open a section — and only the pair under it is carded,
+         which is what actually makes them read as a pair rather than as three
+         unrelated blocks. The orange full stop is the same punctuation-only use
+         of the accent as the deck's mint dot. -->
+    <section class="px-gutter py-section-md">
+      <p data-anim="lines" class="max-w-[30ch] font-display text-h2 tablet:max-w-[34ch]">
+        Client AI helps small and medium-sized entrepreneurs speed up their
+        customer service through customizable chatbots with built-in artificial
+        intelligence<span class="text-orange">.</span>
+      </p>
+
+      <div data-anim="rule" class="mt-section-sm h-px w-full bg-hairline"></div>
+
+      <div data-group class="mt-gutter grid gap-gutter tablet:grid-cols-2">
+        {
+          [
+            {
+              label: "The Problem",
+              body: "Small businesses often face slow customer support due to limited resources, resulting in delays, lost sales, and frustrated customers.",
+            },
+            {
+              label: "The Goal",
+              body: "Create an app that provides AI-powered chatbots to automate responses, improve efficiency, and enhance the customer experience.",
+            },
+          ].map((block) => (
+            <div
+              data-anim="item"
+              class="flex flex-col gap-6 rounded-lg border border-hairline p-8 desktop:gap-8 desktop:p-10"
+            >
+              <h2 class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+                {block.label}
+                <span class="text-orange">.</span>
+              </h2>
+              <p class="max-w-[38ch] text-body-lg">{block.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Design Thinking. The deck centers this one; here it keeps the same left
+         axis as every other section, because a single centered block in an
+         otherwise left-aligned page reads as a mistake rather than as emphasis. -->
+    <section class="px-gutter pb-section-md">
+      <div data-group class="flex flex-col gap-4 pb-8 tablet:flex-row tablet:items-end tablet:justify-between">
+        <h2 data-anim="item" class="font-display text-h2">
+          Design Thinking<span class="text-orange">.</span>
+        </h2>
+        <p data-anim="item" class="max-w-[34ch] text-body text-darkin-muted">
+          The process I ran to get to a user-centered, and effective, solution.
+        </p>
+      </div>
+
+      <div data-anim="rule" class="h-px w-full bg-hairline"></div>
+
+      <ol
+        data-group
+        class="mt-section-sm grid grid-cols-2 gap-x-gutter gap-y-10 tablet:grid-cols-3 desktop:grid-cols-5 desktop:items-start desktop:gap-x-6"
+      >
+        {
+          steps.map((step, i) => (
+            <li
+              data-anim="item"
+              class:list={[
+                "flex flex-col items-center gap-4 text-center",
+                // Only the desktop row is wide enough for the offset to read as
+                // a rhythm; at two and three columns it would just look uneven.
+                i % 2 === 1 && "desktop:mt-16",
+              ]}
+            >
+              <div class="grid aspect-square w-full max-w-[10rem] place-items-center rounded-full border border-hairline">
+                <step.icon class="dt-icon w-[38%] text-darkin" aria-hidden="true" />
+              </div>
+              <h3 class="text-body font-semibold">{step.label}</h3>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <!-- Research. The deck shows three screenshots of the survey tool's own
+         charts — five hues, its grid, its type. Redrawing them costs a few lines
+         and buys charts that belong to this page: one ink, one accent, the
+         site's own measure, and a dark mode that follows the palette. -->
+    <section class="px-gutter pb-section-md">
+      <div data-group class="flex flex-col gap-6">
+        <h2 data-anim="item" class="font-display text-h2">
+          Research &amp; Empathizing<span class="text-orange">.</span>
+        </h2>
+        <p data-anim="item" class="max-w-prose text-body-lg">
+          Interviews, surveys, user journey maps and empathy maps. The whole
+          stage went on understanding the users — their pain points, their
+          challenges, and what they actually needed.
+        </p>
+      </div>
+
+      <div data-group class="mt-section-sm">
+        <h3 data-anim="item" class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+          Interviews and surveys
+        </h3>
+      </div>
+
+      <div data-anim="rule" class="mt-4 h-px w-full bg-hairline"></div>
+
+      <div data-group class="mt-gutter grid gap-gutter desktop:grid-cols-3">
+        <!-- Purpose. Horizontal bars: the labels are full sentences, and lying
+             them along the bar is the only way they stay readable without being
+             rotated or exiled into a legend. Sorted by size, which the source's
+             fixed answer order was not. -->
+        <figure data-anim="item" class="flex flex-col gap-8 rounded-lg border border-hairline p-8">
+          <figcaption class="flex flex-col gap-2">
+            <h4 class="text-body-lg font-semibold text-balance">{purpose.question}</h4>
+            <p class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+              {purpose.answers} answers
+            </p>
+          </figcaption>
+
+          <ul class="flex flex-col gap-5">
+            {
+              purpose.bars.map((bar) => (
+                <li class="flex flex-col gap-2">
+                  <div class="flex items-baseline justify-between gap-4">
+                    <span class="text-body">{bar.label}</span>
+                    <span
+                      class:list={[
+                        "text-body font-semibold tabular-nums",
+                        bar.lead ? "text-orange" : "text-darkin-muted",
+                      ]}
+                    >
+                      {bar.value}%
+                    </span>
+                  </div>
+                  <div class="h-1.5 w-full rounded-full bg-off-white">
+                    <div
+                      class:list={["h-full rounded-full", bar.lead ? "bg-orange" : "bg-darkin"]}
+                      style={`width: ${(bar.value / purposeMax) * 100}%`}
+                    />
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </figure>
+
+        <!-- Satisfaction. Ordinal, so it keeps the source's left-to-right order
+             rather than being sorted, and the scale is named at both ends
+             instead of numbered along the axis. -->
+        <figure data-anim="item" class="flex flex-col gap-8 rounded-lg border border-hairline p-8">
+          <figcaption class="flex flex-col gap-2">
+            <h4 class="text-body-lg font-semibold text-balance">{satisfaction.question}</h4>
+            <p class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+              {satisfaction.answers} answers
+            </p>
+          </figcaption>
+
+          <div class="flex flex-col gap-3">
+            <div class="flex h-40 items-end gap-3">
+              {
+                satisfaction.bars.map((bar) => (
+                  <div class="flex h-full flex-1 flex-col justify-end gap-2 text-center">
+                    <span
+                      class:list={[
+                        "text-meta tabular-nums",
+                        bar.lead ? "text-orange" : "text-darkin-muted",
+                      ]}
+                    >
+                      {bar.value}%
+                    </span>
+                    {/* A zero still gets a mark: a hairline sliver reads as
+                        "nobody picked this", where nothing at all reads as a
+                        rendering bug. */}
+                    <div
+                      class:list={[
+                        "w-full rounded-t-[4px]",
+                        bar.value === 0 ? "bg-hairline" : bar.lead ? "bg-orange" : "bg-darkin",
+                      ]}
+                      style={`height: ${Math.max((bar.value / satisfactionMax) * 100, 1.5)}%`}
+                    />
+                  </div>
+                ))
+              }
+            </div>
+
+            <div class="h-px w-full bg-hairline"></div>
+
+            <div class="flex items-start justify-between gap-4 text-meta text-darkin-muted">
+              <span>Not satisfied at all</span>
+              <span class="text-right">Very satisfied</span>
+            </div>
+          </div>
+        </figure>
+
+        <!-- Frustration. Four slices of one whole, so the ring survives — but
+             direct-labelled beside it rather than annotated inside it, since
+             two of the four are the same size and only the label separates
+             them. -->
+        <figure data-anim="item" class="flex flex-col gap-8 rounded-lg border border-hairline p-8">
+          <figcaption>
+            <h4 class="text-body-lg font-semibold text-balance">{frustration.question}</h4>
+          </figcaption>
+
+          <div class="flex flex-1 flex-wrap items-center gap-8">
+            <!-- Labelled through the attribute rather than a <title> child:
+                 a <title> is also what the browser shows as a hover tooltip,
+                 and a paragraph of alt text floating over the drawing is not
+                 what anyone asked for. -->
+            <svg
+              viewBox="0 0 100 100"
+              class="h-32 w-32 shrink-0 -rotate-90"
+              role="img"
+              aria-label={frustration.question}
+            >
+              {
+                ringSlices.map((slice) => (
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="42"
+                    fill="none"
+                    stroke-width="12"
+                    stroke-dasharray={slice.dash}
+                    stroke-dashoffset={slice.offset}
+                    class={slice.lead ? "stroke-orange" : "stroke-darkin"}
+                    style={slice.lead ? undefined : `opacity: ${0.25 + slice.value / 100}`}
+                  />
+                ))
+              }
+            </svg>
+
+            <ul class="flex min-w-[9rem] flex-1 flex-col gap-3">
+              {
+                frustration.slices.map((slice) => (
+                  <li class="flex items-baseline justify-between gap-4">
+                    <span class="text-body">{slice.label}</span>
+                    <span
+                      class:list={[
+                        "text-body font-semibold tabular-nums",
+                        slice.lead ? "text-orange" : "text-darkin-muted",
+                      ]}
+                    >
+                      {slice.value}%
+                    </span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Double Diamond. Drawn rather than dropped in as an image so the lines
+         are the site's ink and the two nodes are the site's accent — and so the
+         labels are real text at the page's own type scale.
+
+         The diagram has a minimum width and scrolls inside its own track below
+         that: shrinking a 1200-wide drawing into a 375 phone would leave the
+         labels at four pixels. -->
+    <section class="px-gutter pb-section-md">
+      <div data-group class="flex flex-col gap-6">
+        <h2 data-anim="item" class="font-display text-h2">
+          Double Diamond Framework<span class="text-orange">.</span>
+        </h2>
+        <p data-anim="item" class="max-w-prose text-body-lg">
+          A widely used methodology for properly identifying a problem before
+          developing an accurate solution — diverge to explore, converge to
+          decide, twice over.
+        </p>
+      </div>
+
+      <div data-group class="mt-section-sm">
+      <div data-anim="item" class="-mx-gutter overflow-x-auto px-gutter">
+        <svg
+          viewBox="0 0 1200 620"
+          class="w-full min-w-[46rem] text-darkin"
+          role="img"
+          aria-label="The double diamond: a diverge and converge pass to define the problem, then a second pass to ideate the solution."
+        >
+
+          <defs>
+            <marker
+              id="dd-arrow"
+              viewBox="0 0 10 10"
+              refX="9"
+              refY="5"
+              markerWidth="6"
+              markerHeight="6"
+              orient="auto-start-reverse"
+            >
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
+            </marker>
+          </defs>
+
+          <!-- Axes. Both are the muted ink: they frame the drawing, they are not
+               the drawing. -->
+          <g class="text-darkin-muted" stroke="currentColor" stroke-width="2">
+            <line
+              x1="96"
+              y1="140"
+              x2="96"
+              y2="470"
+              marker-start="url(#dd-arrow)"
+              marker-end="url(#dd-arrow)"
+            />
+            <line x1="96" y1="540" x2="1170" y2="540" marker-end="url(#dd-arrow)" />
+          </g>
+
+          <!-- The stage guides sit on the peaks and on the handover between the
+               two diamonds, the way the source has them. -->
+          <g class="text-hairline" stroke="currentColor" stroke-width="2" stroke-dasharray="8 8">
+            <line x1="420" y1="120" x2="420" y2="490" />
+            <line x1="640" y1="120" x2="640" y2="490" />
+            <line x1="860" y1="120" x2="860" y2="490" />
+          </g>
+
+          <!-- The diamonds themselves. -->
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+            <path d="M 200 305 L 420 145 L 640 305 L 420 465 Z" />
+            <path d="M 640 305 L 860 145 L 1080 305 L 860 465 Z" />
+          </g>
+
+          <!-- Start, handover, end. The only three points on the diagram that
+               are a moment rather than a direction. -->
+          <g class="text-orange" fill="currentColor">
+            <circle cx="200" cy="305" r="11" />
+            <circle cx="640" cy="305" r="11" />
+            <circle cx="1080" cy="305" r="11" />
+          </g>
+
+          <!-- Type. Sizes are viewBox units, so they hold their proportion to
+               the drawing at every width it is rendered at. -->
+          <g text-anchor="middle" fill="currentColor">
+            <text x="420" y="70" font-size="30" font-weight="600">Definition</text>
+            <text x="860" y="70" font-size="30" font-weight="600">Ideation</text>
+
+            <g class="text-darkin-muted" fill="currentColor" font-size="20">
+              <text x="420" y="100">the problem</text>
+              <text x="860" y="100">the solution</text>
+            </g>
+
+            <g
+              class="text-darkin-muted"
+              fill="currentColor"
+              font-size="18"
+              font-weight="500"
+              letter-spacing="1.4"
+            >
+              <text x="310" y="512">DIVERGE</text>
+              <text x="530" y="512">CONVERGE</text>
+              <text x="750" y="512">DIVERGE</text>
+              <text x="970" y="512">CONVERGE</text>
+              <text x="633" y="592">TIME</text>
+            </g>
+
+            <text
+              class="text-darkin-muted"
+              fill="currentColor"
+              font-size="18"
+              font-weight="500"
+              letter-spacing="1.4"
+              transform="rotate(-90 34 305)"
+              x="34"
+              y="305"
+            >
+              IDEAS
+            </text>
+          </g>
+        </svg>
+      </div>
+      </div>
+    </section>
+
+    <!-- How Might We. The deck draws the annotations as brackets pinned above
+         and below the sentence, which only holds at one width. Here they are
+         ruby annotations: real markup for "this label belongs to that run of
+         text", so the labels wrap with the sentence instead of sliding off it. -->
+    <section class="px-gutter pb-section-md">
+      <div data-group class="flex flex-col gap-6">
+        <h2 data-anim="item" class="font-display text-h2">
+          How Might We<span class="text-orange">.</span>
+        </h2>
+        <p data-anim="item" class="max-w-prose text-body-lg">
+          The HMW method reframes a problem statement as an invitation to solve
+          it. It is the bridge between the Definition and the Ideation stages —
+          the last thing the first diamond produces, and the first thing the
+          second one needs.
+        </p>
+      </div>
+
+      <div data-group class="mt-section-sm">
+        <p
+          data-anim="item"
+          class="hmw rounded-lg border border-hairline p-8 font-display text-h3 desktop:p-16 desktop:text-h2"
+        >
+          <span class="text-orange">How might we</span>{" "}
+          <ruby>help<rt>Action</rt></ruby>{" "}
+          <ruby>micro-entrepreneurs<rt>Users</rt></ruby>{" "}
+          {/* The goal clause starts its own line. Without the break it began
+              mid-line and ran onto the next, which left its label stranded
+              between the two lines it belonged to. */}
+          <br class="hidden desktop:inline" />
+          <ruby class="hmw-goal"
+            >streamline their customer service process with chatbots?<rt>Goal</rt></ruby
+          >
+        </p>
+      </div>
+    </section>
+
+    <!-- Prototyping. The IA is drawn, not screenshotted: filled nodes for the
+         four screens the app is built around, outlined ones for what hangs off
+         them, and the same scrolling track the double diamond uses. -->
+    <section class="px-gutter pb-section-md">
+      <div data-group class="flex flex-col gap-6">
+        <h2 data-anim="item" class="font-display text-h2">
+          Prototyping<span class="text-orange">.</span>
+        </h2>
+        <p data-anim="item" class="max-w-prose text-body-lg">
+          A low-fidelity prototype first, to settle the product's key
+          interactions and its user flow. That first version was built to be
+          tested — early enough that the feedback could still change it.
+        </p>
+      </div>
+
+      <div data-group class="mt-section-sm">
+        <h3 data-anim="item" class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+          Information architecture
+        </h3>
+      </div>
+
+      <div data-anim="rule" class="mt-4 h-px w-full bg-hairline"></div>
+
+      <div data-group class="mt-gutter">
+        <div data-anim="item" class="-mx-gutter overflow-x-auto px-gutter">
+          <svg
+            viewBox="0 0 1240 470"
+            class="w-full min-w-[48rem] text-darkin"
+            role="img"
+            aria-label="Information architecture: Home leads to the dashboard, and to the bots panel, the chat system and the user profile — each with its own screens under it."
+          >
+
+            <defs>
+              <marker
+                id="ia-arrow"
+                viewBox="0 0 10 10"
+                refX="9"
+                refY="5"
+                markerWidth="6"
+                markerHeight="6"
+                orient="auto"
+              >
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
+              </marker>
+            </defs>
+
+            <!-- Connectors. Elbows rather than straight drops, so a branch with
+                 two screens under it doesn't run its line through the first one
+                 to reach the second. -->
+            <g
+              class="text-darkin-muted"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"
+              marker-end="url(#ia-arrow)"
+            >
+              <path d="M 700 60 H 894" />
+              <path d="M 600 90 V 130 H 200 V 174" />
+              <path d="M 600 130 V 174" />
+              <path d="M 600 90 V 130 H 1000 V 174" />
+              <path d="M 100 240 V 324 H 134" />
+              <path d="M 100 240 V 404 H 134" />
+              <path d="M 500 240 V 324 H 534" />
+              <path d="M 900 240 V 324 H 934" />
+            </g>
+
+            <!-- The four screens the app is actually built around carry the ink
+                 fill; everything reached from them is outlined. The hierarchy is
+                 the whole point of the drawing, so it is drawn, not colored. -->
+            <g class="text-darkin" fill="currentColor">
+              <rect x="500" y="30" width="200" height="60" rx="8" />
+              <rect x="80" y="174" width="240" height="66" rx="8" />
+              <rect x="480" y="174" width="240" height="66" rx="8" />
+              <rect x="880" y="174" width="240" height="66" rx="8" />
+            </g>
+
+            <g
+              class="text-hairline"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="894" y="36" width="226" height="48" rx="8" />
+              <rect x="134" y="300" width="226" height="48" rx="8" />
+              <rect x="134" y="380" width="226" height="48" rx="8" />
+              <rect x="534" y="300" width="226" height="48" rx="8" />
+              <rect x="934" y="300" width="226" height="48" rx="8" />
+            </g>
+
+            <!-- Type. The filled nodes take the paper color so they read as
+                 reversed labels in either theme. -->
+            <g text-anchor="middle" font-size="24" font-weight="600">
+              <g class="text-white" fill="currentColor">
+                <text x="600" y="68">Home</text>
+                <text x="200" y="215">Bots Panel</text>
+                <text x="600" y="215">Chat System</text>
+                <text x="1000" y="215">User Profile</text>
+              </g>
+
+              <g class="text-darkin" fill="currentColor" font-size="20" font-weight="500">
+                <text x="1007" y="67">Dashboard</text>
+                <text x="247" y="331">Create New Bot</text>
+                <text x="247" y="411">Admin Bots</text>
+                <text x="647" y="331">All Chats</text>
+                <text x="1047" y="331">User Information</text>
+              </g>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sketches to wireframes. Two rows and an arrow between them: the paper
+         pass, then the same screens drawn. The pairing is the point, so the two
+         grids sit close together and share one caption rather than becoming two
+         sections. -->
+    <section class="px-gutter pb-section-md">
+      <div data-group>
+        <h3 data-anim="item" class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+          Low-fidelity wireframes
+        </h3>
+      </div>
+
+      <div data-anim="rule" class="mt-4 h-px w-full bg-hairline"></div>
+
+      <div data-group class="mt-gutter grid grid-cols-2 gap-gutter desktop:grid-cols-4">
+        {
+          sketches.map((sketch, i) => (
+            <img
+              data-anim="item"
+              src={sketch.src}
+              width={sketch.width}
+              height={sketch.height}
+              alt={`Paper sketch ${i + 1} of the app's screens`}
+              loading="lazy"
+              class="aspect-[47/77] w-full rounded-lg border border-hairline object-cover"
+            />
+          ))
+        }
+      </div>
+
+      <!-- The deck puts an arrow under every sketch. One is enough: the two
+           rows are already stacked, and four arrows in a line read as
+           decoration rather than as a step. -->
+      <div data-group class="mt-gutter flex justify-center">
+        <svg
+          data-anim="item"
+          viewBox="0 0 24 40"
+          class="h-10 w-6 text-darkin-muted"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path d="M 12 0 V 36" />
+          <path d="M 3 27 L 12 38 L 21 27" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+
+      <!-- One composed render rather than six loose cut-outs: the screens are
+           laid out as a set in the source file, and re-flowing them into a grid
+           only re-did that arrangement worse. Recessed surface, since the render
+           is transparent and the phones are white. -->
+      <div data-group class="mt-gutter rounded-lg bg-off-white p-6 desktop:p-12">
+        <img
+          data-anim="item"
+          src={wireframes.src}
+          width={wireframes.width}
+          height={wireframes.height}
+          alt="The full set of low-fidelity wireframes: sign-up, bots, dashboard, bot profile, product configuration and tone of voice"
+          loading="lazy"
+          class="w-full"
+        />
+      </div>
+
+    </section>
+
+    <!-- Testing. The deck reports the tasks as green and red blocks, which is
+         color doing the whole job. Here each task is a bar the width of its
+         sample: the filled run is what succeeded, the outlined run what did
+         not, and the numbers are printed either way. -->
+    <section class="px-gutter pb-section-md">
+      <div data-group class="flex flex-col gap-6">
+        <h2 data-anim="item" class="font-display text-h2">
+          Testing<span class="text-orange">.</span>
+        </h2>
+        <p data-anim="item" class="max-w-prose text-body-lg">
+          Usability testing on real users, to find where the app got in their
+          way. What came back changed the interactions — clarity and
+          responsiveness first.
+        </p>
+      </div>
+
+      <div data-group class="mt-section-sm">
+        <h3 data-anim="item" class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+          Unmoderated usability testing
+        </h3>
+      </div>
+
+      <div data-anim="rule" class="mt-4 h-px w-full bg-hairline"></div>
+
+      <div data-group class="mt-gutter grid gap-gutter desktop:grid-cols-3">
+        <!-- The tool, and what it was actually there to capture. -->
+        <div
+          data-anim="item"
+          class="flex flex-col justify-between gap-10 rounded-lg border border-hairline p-8"
+        >
+          <div class="flex items-center gap-4">
+            <MazeLogo class="h-10 w-auto text-darkin" aria-hidden="true" />
+            <span class="text-h3 font-semibold">Maze</span>
+          </div>
+
+          <div class="flex flex-col gap-4">
+            <h4 class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+              Quantitative data
+            </h4>
+            <ul class="flex flex-col gap-2 text-body">
+              {mazeCaptures.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Results. One row per task, each bar as wide as that task's own
+             sample, so a task run with fewer users doesn't read as a shorter
+             task. -->
+        <div
+          data-anim="item"
+          class="flex flex-col gap-8 rounded-lg border border-hairline p-8 desktop:col-span-2"
+        >
+          <h4 class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+            Results per task
+          </h4>
+
+          <ul class="flex flex-col gap-8">
+            {
+              tasks.map((task) => {
+                const total = task.success + task.fail;
+                return (
+                  <li class="flex flex-col gap-3">
+                    <div class="flex items-baseline justify-between gap-4">
+                      <span class="text-body-lg font-semibold">{task.name}</span>
+                      <span class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+                        {total} users
+                      </span>
+                    </div>
+
+                    <div class="flex h-2.5 w-full gap-1">
+                      <div
+                        class="rounded-full bg-darkin"
+                        style={`width: ${(task.success / total) * 100}%`}
+                      />
+                      <div
+                        class="rounded-full border border-darkin-muted"
+                        style={`width: ${(task.fail / total) * 100}%`}
+                      />
+                    </div>
+
+                    <div class="flex flex-wrap gap-x-6 gap-y-1 text-body text-darkin-muted">
+                      <span class="text-darkin">
+                        <span class="font-semibold tabular-nums">{task.success}</span> succeeded
+                      </span>
+                      <span>
+                        <span class="font-semibold tabular-nums">{task.fail}</span> failed
+                      </span>
+                      {task.quit > 0 && (
+                        <span>
+                          <span class="font-semibold tabular-nums">{task.quit}</span> of them quit
+                        </span>
+                      )}
+                    </div>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </div>
+      </div>
+
+      <!-- Heatmaps. The one place on the page where color is not mine to set:
+           the gradient is the reading, so the captures go in as they came out
+           of the tool, on the recessed surface rather than the page. -->
+      <div data-group class="mt-gutter flex flex-col gap-8 rounded-lg bg-off-white p-8 desktop:p-12">
+        <h4 data-anim="item" class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+          Heatmap examples
+        </h4>
+
+        <div class="grid grid-cols-2 gap-6 desktop:grid-cols-4 desktop:gap-gutter">
+          {
+            heatmaps.map((map) => (
+              <img
+                data-anim="item"
+                src={map.src.src}
+                width={map.src.width}
+                height={map.src.height}
+                alt={map.alt}
+                loading="lazy"
+                class="w-full rounded-lg border border-hairline bg-white"
+              />
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- UI Design. Everything above this point is drawn in the site's own ink;
+         from here the app's palette is the subject, so the swatches, the type
+         specimens and the logo card carry the project's colors literally and
+         the page's roles step aside. -->
+    <section class="px-gutter pb-section-md">
+      <div data-group class="flex flex-col gap-6">
+        <h2 data-anim="item" class="font-display text-h2">
+          UI Design<span class="text-orange">.</span>
+        </h2>
+        <p data-anim="item" class="max-w-prose text-body-lg">
+          With the testing behind it, the interface got its type, its palette
+          and its interactive states — the pass that turns a tested flow into
+          something worth looking at.
+        </p>
+      </div>
+
+      <div data-group class="mt-section-sm">
+        <h3 data-anim="item" class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+          UI kit
+        </h3>
+      </div>
+
+      <div data-anim="rule" class="mt-4 h-px w-full bg-hairline"></div>
+
+      <div
+        data-group
+        class="mt-gutter grid gap-gutter desktop:grid-cols-[1.5fr_1fr_1fr] desktop:items-stretch"
+      >
+        <!-- Type. Set in the faces they name, at the weight the kit uses, so
+             the specimen is the thing itself rather than a description of it.
+             On the page's own card: the palette is stated by the swatches
+             beside it, and a mint ground here only made the type harder to
+             read as type. -->
+        <div class="flex flex-col gap-gutter">
+          {
+            typefaces.map((face) => (
+              <div
+                data-anim="item"
+                class="flex flex-1 flex-col justify-between gap-10 rounded-lg border border-hairline p-8"
+              >
+                <div class="flex items-baseline justify-between gap-4">
+                  <span class="text-meta tracking-[0.08em] text-darkin-muted uppercase">Font</span>
+                  <span class="text-body-lg font-semibold">{face.name}</span>
+                </div>
+
+                <div class="flex items-end justify-between gap-6">
+                  <div class="flex flex-col gap-1 text-body">
+                    <span class="font-semibold">{face.role}</span>
+                    <span class="text-darkin-muted">{face.detail}</span>
+                  </div>
+                  <span
+                    class="leading-none"
+                    style={`font-family: ${face.family}; font-weight: ${face.weight}; font-size: 4.5rem`}
+                  >
+                    Aa
+                  </span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <!-- Palette. The hex sits inside its own swatch: a legend beside the
+             chips would make the reader match colors to labels by position. -->
+        <div
+          data-anim="item"
+          class="flex flex-col gap-4 rounded-lg border border-hairline p-8"
+        >
+          {
+            palette.map((swatch) => (
+              <div
+                class="flex flex-1 items-center justify-center rounded-lg py-5 text-meta font-semibold tracking-[0.08em]"
+                style={`background-color: ${swatch.hex}; color: ${swatch.ink}`}
+              >
+                {swatch.hex}
+              </div>
+            ))
+          }
+        </div>
+
+        <!-- The marks on the page's own card, like every other card in this
+             row. They keep their lavender: it is the brand's color and the one
+             thing the swatches beside them cannot show in place. -->
+        <div
+          data-anim="item"
+          class="flex flex-col items-center justify-center gap-12 rounded-lg border border-hairline p-8"
+        >
+          <div class="flex flex-col items-center gap-5">
+            <h4 class="text-meta tracking-[0.08em] text-darkin-muted uppercase">Isotipo</h4>
+            <Isotipo class="h-20 w-auto" aria-label="Client AI symbol" />
+          </div>
+
+          <div class="flex flex-col items-center gap-5">
+            <h4 class="text-meta tracking-[0.08em] text-darkin-muted uppercase">Imagotipo</h4>
+            <Imagotipo class="h-28 w-auto" aria-label="Client AI logo" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- High fidelity. One composed render, like the wireframes above it: the
+         screens are already arranged as a set in the source file, and they get
+         the same recessed surface those do. Not the ink one: `bg-darkin` is a
+         text role, and in dark mode it swaps to a pale wash — which is why this
+         panel came out light against a dark page. `bg-off-white` is the surface
+         role, and it follows the palette instead of inverting against it. -->
+    <section class="px-gutter pb-section-md">
+      <div data-group>
+        <h3 data-anim="item" class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+          High-fidelity prototype
+        </h3>
+      </div>
+
+      <div data-anim="rule" class="mt-4 h-px w-full bg-hairline"></div>
+
+      <div data-group class="mt-gutter">
+        <div data-anim="card" class="rounded-lg bg-off-white p-6 desktop:p-12">
+          <img
+            data-anim="item"
+            src={mockups.src}
+            width={mockups.width}
+            height={mockups.height}
+            alt="The full set of high-fidelity screens: bot profile, shipment tracking, dashboard, chats, sign-in, tone of voice and product detail"
+            loading="lazy"
+            class="w-full"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Close. The case study is an edit; the full deck lives on Behance, so
+         the page hands the reader over rather than trailing off. Built as one
+         card in the same grammar as the About page's social cards — mark on
+         top, label and arrow along the bottom, the whole thing inverting to ink
+         on hover — because that is already the site's way of saying "this link
+         leaves for somewhere worth going". -->
+    <section class="px-gutter pb-section-lg">
+      {/* The air above this rule is the previous section's own bottom padding,
+          a section-md; matching it below keeps the line centred in the break
+          rather than sitting closer to the card it introduces. */}
+      <div data-anim="rule" class="h-px w-full bg-hairline"></div>
+
+      <div data-group class="mt-section-md">
+        <a
+          href="https://www.behance.net/gallery/221060823/Client-Ai-UXUI-Design-Project"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-anim="item"
+          class="group flex flex-col justify-between gap-16 rounded-lg border border-hairline p-8 transition-colors duration-300 hover:border-darkin hover:bg-darkin hover:text-white desktop:p-12"
+        >
+          {/* Sized in both axes: a sprite <svg> has no intrinsic width, so
+              `w-auto` stretches it to the card and the mark ends up centred in
+              a 1100px box. The ratio is the symbol's own, 40x26. */}
+          <svg
+            class="h-10 w-[3.85rem] desktop:h-12 desktop:w-[4.62rem]"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <use href="#icon-behance" />
+          </svg>
+
+          <div class="flex items-end justify-between gap-6">
+            <h2 class="font-display text-h2">Watch the full project</h2>
+
+            <span
+              aria-hidden="true"
+              class="text-h3 transition-transform duration-300 group-hover:translate-x-1"
+            >
+              &rarr;
+            </span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</Layout>
+
+<!--
+  The five process marks come out of Figma as filled shapes carrying a 1px
+  inside stroke in the artboard's own background — the trick that thins the
+  drawn line without redrawing the path. Keeping that stroke as ink doubled the
+  weight instead, so the color is set here rather than baked into the files:
+  paper, which follows the palette into dark mode. The per-icon stroke-widths
+  stay in the files, since each was drawn at its own scale.
+
+  Not scoped: Astro's scoped styles tag the elements in this template, and these
+  paths live inside the imported SVG components.
+-->
+<style is:global>
+  /* The HMW annotations.
+
+     The extent of each fragment is a tinted run rather than a rule under it:
+     an underline sits at a fixed distance from the baseline, which put the
+     goal's line halfway between two lines of a wrapped sentence and left the
+     three marks at three different weights. A tint has no such geometry — it
+     wraps with the words, `box-decoration-break: clone` gives every line its
+     own rounded ends, and nothing has to be measured.
+
+     The label is a ruby annotation, which is the markup for "this word names
+     that run of text". The goal's sits under its clause, as the deck has it:
+     the fragment is the tail of the sentence and its own line, so a label
+     underneath closes the statement instead of crowding the line above. */
+  .hmw {
+    line-height: 1.85;
+  }
+
+  .hmw ruby {
+    background-color: var(--color-off-white);
+    border-radius: 0.2em;
+    padding: 0.06em 0.22em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .hmw rt {
+    font-family: var(--font-sans);
+    font-size: 0.34em;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-darkin-muted);
+    /* Ruby packs the annotation hard onto the base; this is the air that makes
+       the label read as a caption of the run rather than as a superscript on
+       its first word. */
+    padding-bottom: 0.9em;
+  }
+
+  /* The goal's label hangs under its clause — but only from desktop up, where
+     the break above puts that clause on a line of its own. Narrower than that
+     the clause wraps, and an under-label is drawn beneath the FIRST of its
+     lines, i.e. straight through the second one. There it stays above with the
+     other two. */
+  @media (min-width: 1024px) {
+    .hmw-goal {
+      ruby-position: under;
+    }
+
+    .hmw-goal rt {
+      padding-top: 0.9em;
+      padding-bottom: 0;
+    }
+  }
+
+  .dt-icon path {
+    stroke: var(--color-white);
+  }
+</style>

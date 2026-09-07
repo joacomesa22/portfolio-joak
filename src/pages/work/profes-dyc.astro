@@ -1,0 +1,592 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Footer from "../../components/Footer.astro";
+import mockup from "../../assets/img/profesdyc/mockup.png";
+import RmpLogo from "../../assets/img/profesdyc/rmp.svg";
+import RmdLogo from "../../assets/img/profesdyc/rmd.svg";
+import rmpShot from "../../assets/img/profesdyc/rmp.png";
+import rmdShot from "../../assets/img/profesdyc/rmd.png";
+import wireframe1 from "../../assets/img/profesdyc/wireframe1.jpg";
+import wireframe2 from "../../assets/img/profesdyc/wireframe2.jpg";
+import wireframe3 from "../../assets/img/profesdyc/wireframe3.jpg";
+import wireframe4 from "../../assets/img/profesdyc/wireframe4.jpg";
+import wireframe5 from "../../assets/img/profesdyc/wireframe5.jpg";
+import uiMockup1 from "../../assets/img/profesdyc/mockup.png";
+import uiMockup2 from "../../assets/img/profesdyc/mockup2.png";
+import uiMockup3 from "../../assets/img/profesdyc/mockup3.png";
+import uiMockup4 from "../../assets/img/profesdyc/mockup4.png";
+import Logo from "../../assets/img/profesdyc/logo.svg";
+import devShot from "../../assets/img/profesdyc/dev.png";
+import NextLogo from "../../assets/img/profesdyc/next.svg";
+import TailwindLogo from "../../assets/img/profesdyc/tailwind.svg";
+import TursoLogo from "../../assets/img/profesdyc/turso.svg";
+
+// Shown as a rule-separated line under the title rather than as tags — same as
+// the Client AI case study, so the two read as one series.
+const meta = ["UX Research", "UI Design", "Front-end", "Web App"];
+
+const LIVE_URL = "https://profes-dyc.vercel.app/";
+
+// The two platforms the research looked at. Both marks are redrawn in the
+// page's own ink rather than kept in brand color: they are cited here as
+// reference, they arrive as a white bubble and a blue tile that both need a
+// light ground to survive, and two foreign palettes in one row would out-shout
+// the work the row is actually about.
+const references = [
+  {
+    name: "Rate My Professors",
+    blurb:
+      "A web platform where students rate and review professors to help others make informed academic choices.",
+    Logo: RmpLogo,
+    // Both axes, from the file's own ratio: an imported SVG has no intrinsic
+    // width here, so `w-auto` lets it fill the column and the mark ends up
+    // floating in the middle of it instead of sitting on the left margin.
+    markClass: "h-12 w-[5.28rem]",
+    shot: rmpShot,
+    alt: "A Rate My Professors profile: overall quality, rating distribution, top tags and student reviews",
+    features: [
+      "Professor searching system",
+      "1–5 rating scale",
+      "Rating average",
+      "Written reviews",
+      "Rating distribution",
+      "New review form",
+      "Tags system",
+    ],
+  },
+  {
+    name: "Rate My Dorm",
+    blurb:
+      "An online platform where students rate and review their college dormitories.",
+    Logo: RmdLogo,
+    markClass: "h-12 w-12",
+    shot: rmdShot,
+    alt: "A Rate My Dorm listing: star rating, photos, a written student review and a housing forum",
+    features: [
+      "Dorm searching system",
+      "Stars rating system",
+      "Dorm submitting form",
+      "Dorm general stats",
+      "Top 5 best rated dorms",
+    ],
+  },
+];
+
+// Five screens at five different heights. They go in a masonry rather than a
+// grid: on equal rows the short ones would carry a block of dead space each,
+// and cropping a wireframe to a shared ratio would cut off the very thing it
+// exists to show.
+const wireframes = [
+  { src: wireframe1, alt: "Wireframe of the home page" },
+  { src: wireframe2, alt: "Wireframe of a professor's profile: rating, distribution and reviews" },
+  { src: wireframe3, alt: "Wireframe of the search results page" },
+  { src: wireframe4, alt: "Wireframe of the user account page and its own reviews" },
+  { src: wireframe5, alt: "Wireframe of the new review form" },
+];
+
+// The four UI renders, placed by corner. At desktop they are absolutely
+// positioned inside one fixed-ratio box: every offset is a percentage of that
+// box, so the arrangement scales as a unit and the copy keeps the hole at its
+// centre at every width. Below desktop the same four fall back into a plain
+// 2x2 — a radial composition cannot survive a phone.
+// `at` places each render at desktop. `fit` only applies below it, where all
+// four share an equal grid cell: the renders were exported at different crops,
+// so the laptop fills 99% of one file's width and 74% of another's, and equal
+// boxes leave the last one visibly smaller than the rest. The factors bring
+// the laptops themselves to the same size.
+const uiShots = [
+  {
+    src: uiMockup1,
+    alt: "The recommendations home page",
+    at: "desktop:left-0 desktop:top-0 desktop:w-[42%]",
+    fit: "scale-[1.14] desktop:scale-100",
+  },
+  {
+    src: uiMockup2,
+    alt: "The review form for a professor",
+    at: "desktop:right-0 desktop:-top-[3%] desktop:w-[40%]",
+    fit: "",
+  },
+  {
+    src: uiMockup3,
+    alt: "Search results for a professor",
+    at: "desktop:bottom-0 desktop:left-0 desktop:w-[40%]",
+    fit: "",
+  },
+  {
+    src: uiMockup4,
+    alt: "A professor's profile: rating, distribution and reviews",
+    at: "desktop:-right-30 desktop:-bottom-10 desktop:w-[54%]",
+    fit: "scale-[1.33] desktop:scale-100",
+  },
+];
+
+// The app's palette, printed as it ships: one purple ramp plus its tints. This
+// is the one block on the page whose color is the subject rather than the
+// styling, so the site's own ink and accent step aside for it. Ink per swatch
+// is chosen against its own ground, not inherited.
+const palette = [
+  { hex: "#250C69", ink: "#F4F2FF" },
+  { hex: "#D8D4FF", ink: "#250C69" },
+  { hex: "#6932F5", ink: "#F4F2FF" },
+  { hex: "#EAE8FF", ink: "#250C69" },
+  { hex: "#9985FF", ink: "#250C69" },
+  { hex: "#F4F2FF", ink: "#250C69" },
+];
+
+// The stack, with what each piece was actually for. Sized in both axes from
+// each file's own ratio: an imported SVG has no intrinsic width here, so
+// `w-auto` would let it fill its cell and centre the mark inside the space.
+const stack = [
+  // Every mark rides in the same 3rem slot, so the labels start on one axis.
+  // Inside it each is sized for optical weight rather than to a shared box: a
+  // filled circle, a wide flat wave and a tall horned bull all read differently
+  // at the same nominal height.
+  { name: "Next.js", role: "Front end and API in one codebase", Logo: NextLogo, size: "h-8 w-8" },
+  { name: "Tailwind", role: "Styling, and the responsive work", Logo: TailwindLogo, size: "h-[1.65rem] w-11" },
+  { name: "Turso", role: "Database", Logo: TursoLogo, size: "h-7 w-[2.06rem]" },
+];
+
+const framing = [
+  {
+    label: "The problem",
+    body: "Students at my university had no reliable way to find out what a professor was actually like. The only option was word of mouth from friends, so people enrolled in courses with no insight into how they were taught — and often picked the instructor who suited them least.",
+  },
+  {
+    label: "The solution",
+    body: "A platform where students rate professors and publish their reviews, so the choice is made on peer feedback: which teaching styles match how you actually learn.",
+  },
+];
+---
+
+<Layout
+  title="ProfesDyC — Joaquín Mesa"
+  description="Case study: a web platform where university students rate and review their professors, from research through a shipped front-end."
+>
+  <main
+    class="mx-auto w-full max-w-[calc(var(--container-content)+2*var(--spacing-gutter))] pt-[var(--header-h)]"
+  >
+    <!-- Lead. Same shape as the Client AI page: display title, a sentence at a
+         readable measure, and the disciplines down the right. -->
+    <section class="px-gutter pt-section-sm pb-gutter">
+      <h1 data-anim="lines" class="font-display text-display">ProfesDyC</h1>
+
+      <div
+        data-group
+        class="mt-gutter flex flex-col gap-6 desktop:flex-row desktop:items-start desktop:justify-between desktop:gap-16"
+      >
+        <p data-anim="item" class="max-w-prose text-body-lg">
+          Professor reviews by students, for students — a web platform where the
+          next intake picks its courses on something better than hearsay.
+          Designed and built end to end.
+        </p>
+
+        <ul
+          data-anim="item"
+          class="flex flex-wrap gap-x-6 gap-y-2 text-meta tracking-[0.08em] text-darkin-muted uppercase desktop:max-w-[18rem] desktop:flex-col desktop:gap-y-3"
+        >
+          {meta.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </section>
+
+
+    <!-- Overview. The mascot leads, as in the deck — it is the project's only
+         piece of illustration and the thing that gives the platform its voice.
+         The statement takes the display face rather than a heading of its own:
+         "Overview" as a label would say less than the sentence under it. -->
+    <section class="px-gutter py-section-md">
+      <div
+        data-group
+        class="grid items-center gap-gutter desktop:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] desktop:gap-10"
+      >
+        <img
+          data-anim="item"
+          src={mockup.src}
+          width={mockup.width}
+          height={mockup.height}
+          alt="ProfesDyC open on a laptop, showing the recommendations page"
+          class="mx-auto w-full max-w-[52rem]"
+        />
+
+        <p data-anim="item" class="font-display text-h2">
+          A web platform where students at my university rate their professors
+          and publish the reviews, so everyone else can choose a course on
+          something better than hearsay<span class="text-orange">.</span>
+        </p>
+      </div>
+
+      <div data-anim="rule" class="mt-section-sm h-px w-full bg-hairline"></div>
+
+      <!-- Problem and solution as a pair of hairline cards — the same shape the
+           Client AI page gives the same job, so the two case studies read as
+           one series rather than two designs. -->
+      <div data-group class="mt-gutter grid gap-gutter tablet:grid-cols-2">
+        {
+          framing.map((block) => (
+            <div
+              data-anim="item"
+              class="flex flex-col gap-6 rounded-lg border border-hairline p-8 desktop:gap-8 desktop:p-10"
+            >
+              <h2 class="text-meta tracking-[0.08em] text-darkin-muted uppercase">
+                {block.label}
+                <span class="text-orange">.</span>
+              </h2>
+              <p class="max-w-[46ch] text-body-lg">{block.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+
+    <!-- Research. Two existing platforms, read for what they do well: each one
+         gets its mark, what it is, the features worth taking, and a capture of
+         the real thing. The captures bleed off the right edge the way the deck
+         has them — they are screenshots of somebody else's product, so they are
+         evidence rather than artwork and do not need framing. -->
+    <section class="px-gutter pb-section-md">
+      <div data-group class="flex flex-col gap-6">
+        <h2 data-anim="item" class="font-display text-h2">
+          Research<span class="text-orange">.</span>
+        </h2>
+        <p data-anim="item" class="max-w-prose text-body-lg">
+          I went through the platforms already doing ratings and reviews, and
+          read their features, their interfaces and their feedback mechanics for
+          what was worth taking and what was worth avoiding.
+        </p>
+      </div>
+
+      <div class="mt-section-sm flex flex-col gap-section-sm">
+        {
+          references.map((ref) => (
+            <div
+              data-group
+              class="grid items-center gap-gutter desktop:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] desktop:gap-12"
+            >
+              <div data-anim="item" class="flex flex-col gap-8">
+                <div class="flex flex-col gap-5">
+                  <ref.Logo
+                    class:list={["brand-mark text-darkin", ref.markClass]}
+                    aria-label={ref.name}
+                  />
+
+                  <div class="flex flex-col gap-2">
+                    <h3 class="text-h3 font-semibold">{ref.name}</h3>
+                    <p class="max-w-[40ch] text-body text-darkin-muted">{ref.blurb}</p>
+                  </div>
+                </div>
+
+                <ul class="flex flex-col gap-2 text-body">
+                  {ref.features.map((feature) => (
+                    <li class="flex items-baseline gap-3">
+                      <span
+                        aria-hidden="true"
+                        class="h-1.5 w-1.5 shrink-0 translate-y-[-0.15em] rounded-full bg-orange"
+                      />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <img
+                data-anim="item"
+                src={ref.shot.src}
+                width={ref.shot.width}
+                height={ref.shot.height}
+                alt={ref.alt}
+                loading="lazy"
+                class="w-full"
+              />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+
+    <!-- Wireframing. -->
+    <section class="px-gutter pb-section-md">
+      <div data-group class="flex flex-col gap-6">
+        <h2 data-anim="item" class="font-display text-h2">
+          Wireframing<span class="text-orange">.</span>
+        </h2>
+        <p data-anim="item" class="max-w-prose text-body-lg">
+          Every page of the site drawn in Figma first. Tweaking and refining the
+          wireframes is what turned the research into a structure the design
+          could be built on.
+        </p>
+      </div>
+
+      <div data-group class="mt-section-sm columns-1 gap-gutter tablet:columns-2">
+        {
+          wireframes.map((frame) => (
+            <img
+              data-anim="item"
+              src={frame.src.src}
+              width={frame.src.width}
+              height={frame.src.height}
+              alt={frame.alt}
+              loading="lazy"
+              class="mb-gutter w-full break-inside-avoid rounded-lg border border-hairline"
+            />
+          ))
+        }
+      </div>
+    </section>
+
+
+    <!-- UI design. Four renders placed to the corners of one fixed-ratio box.
+         The profile render hangs off the right edge of that box, so the clip has
+         to sit at the VIEWPORT rather than at the page's 1200 shell: clipping at
+         the shell cut the hanging render along the content edge, while no clip
+         at all gives the document a horizontal scrollbar. The inner wrapper is
+         viewport-wide and clipping; the composition keeps the shell width. -->
+    <section class="overflow-x-clip pb-section-md">
+      <div class="relative left-1/2 w-screen max-w-none -translate-x-1/2 px-gutter">
+        <div class="relative mx-auto w-full max-w-[var(--container-content)]">
+        {/* Reversed below desktop so the heading comes before the renders it
+            introduces; at desktop the order is spatial, not sequential. */}
+        <div class="relative flex flex-col-reverse gap-gutter desktop:block desktop:aspect-[16/10]">
+          {/* `data-group` is what the reveal animation iterates: an item with no
+              group ancestor is hidden by the entrance CSS and never revealed. */}
+          <div data-group class="grid grid-cols-2 gap-4 tablet:gap-8 desktop:block">
+            {
+              uiShots.map((shot) => (
+                <img
+                  data-anim="item"
+                  src={shot.src.src}
+                  width={shot.src.width}
+                  height={shot.src.height}
+                  alt={shot.alt}
+                  loading="lazy"
+                  class:list={["w-full desktop:absolute", shot.fit, shot.at]}
+                />
+              ))
+            }
+          </div>
+
+          <!-- The copy sits in the hole the four renders leave. The nudge is
+               because that hole is not centred in the box: the renders differ
+               in size and one hangs off the right edge, so a plain centre would
+               leave more air on the left than on the right. Measured off the
+               renders' solid pixels, not their boxes, since each PNG carries a
+               wide margin of transparency.
+
+               Centred text here and only here: the arrangement is radial, so a
+               left-aligned block would read as having slipped out of place. -->
+          <div
+            data-group
+            class="flex flex-col items-center gap-6 px-gutter text-center desktop:absolute desktop:inset-0 desktop:m-0 desktop:-translate-x-[2.8%] desktop:justify-center desktop:px-0"
+          >
+            <h2 data-anim="item" class="font-display text-h2">
+              UI design<span class="text-orange">.</span>
+            </h2>
+            <p data-anim="item" class="max-w-[24ch] text-body-lg">
+              With the structure settled, the visual design: type, color and
+              components pulled into line with what the platform is for.
+            </p>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- UI kit. The palette and the mark are the subject here, so they carry
+         the project's colors literally while the rest of the page keeps its
+         own. -->
+    <section class="px-gutter pb-section-md">
+      <div data-group class="flex flex-col gap-6">
+        <h2 data-anim="item" class="font-display text-h2">
+          UI kit<span class="text-orange">.</span>
+        </h2>
+        <p data-anim="item" class="max-w-prose text-body-lg">
+          One typeface, one purple ramp, and a logotype built from the same
+          squared-off shapes as the interface.
+        </p>
+      </div>
+
+      <div data-group class="mt-section-sm grid gap-gutter desktop:grid-cols-2">
+        <div class="flex flex-col gap-gutter">
+          <!-- The logotype in the page's ink, on the page's own card. The kit
+               reverses it out of purple, but three purple panels in a row made
+               the section shout over the case study around it. -->
+          <div
+            data-anim="item"
+            class="grid flex-1 place-items-center rounded-lg border border-hairline p-8 desktop:p-12"
+          >
+            <Logo class="logo w-full max-w-[30rem] text-darkin" aria-label="ProfesDyC" />
+          </div>
+
+          <!-- Type specimen. Onest is the face this site is set in too, so the
+               sample is the real thing rather than a stand-in. -->
+          <div
+            data-anim="item"
+            class="flex flex-col justify-between gap-12 rounded-lg border border-hairline p-8 desktop:p-10"
+          >
+            <div class="flex items-baseline justify-between gap-4">
+              <span class="text-meta tracking-[0.08em] text-darkin-muted uppercase">Font</span>
+              <span class="text-body-lg font-semibold">Onest</span>
+            </div>
+
+            <div class="flex items-end justify-between gap-6">
+              <ul class="flex flex-col gap-1 text-body">
+                <li class="font-normal">Regular</li>
+                <li class="font-semibold">Semibold</li>
+                <li class="font-bold">Bold</li>
+              </ul>
+              <span class="text-[4.5rem] leading-none font-bold">Aa</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Palette. The hex sits inside its own swatch: a legend beside the
+             chips would make the reader match color to label by position. -->
+        <div
+          data-anim="item"
+          class="grid grid-cols-2 gap-4 rounded-lg border border-hairline p-6 desktop:gap-6 desktop:p-8"
+        >
+          {
+            palette.map((swatch) => (
+              <div
+                {/* A hairline ring, so the near-white steps still have an edge
+                    against the page rather than dissolving into it. */}
+                class="flex min-h-28 items-center justify-center rounded-lg text-meta font-semibold tracking-[0.08em] ring-1 ring-hairline desktop:min-h-36"
+                style={`background-color: ${swatch.hex}; color: ${swatch.ink}`}
+              >
+                {swatch.hex}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Development. The case study's last stage, and the one that separates
+         this project from a deck: it shipped. -->
+    <section class="px-gutter pb-section-md">
+      <div
+        data-group
+        class="grid items-center gap-section-sm desktop:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] desktop:gap-12"
+      >
+        <div class="flex flex-col gap-8">
+          <h2 data-anim="item" class="font-display text-h2">
+            Development<span class="text-orange">.</span>
+          </h2>
+
+          <p data-anim="item" class="max-w-prose text-body-lg">
+            Then I built it. The UI became a working platform — students can
+            search a professor, read what other people wrote, and leave a review
+            of their own.
+          </p>
+
+          <!-- The stack named rather than left as three logos: a mark on its own
+               says which tool, not what it was for. -->
+          <ul data-anim="item" class="flex flex-col gap-5">
+            {
+              stack.map((tech) => (
+                <li class="flex items-center gap-5">
+                  <span class="flex h-12 w-12 shrink-0 items-center justify-center text-darkin">
+                    <tech.Logo class:list={[tech.size]} aria-hidden="true" />
+                  </span>
+                  <div class="flex flex-col">
+                    <span class="text-body font-semibold">{tech.name}</span>
+                    <span class="text-body text-darkin-muted">{tech.role}</span>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <img
+          data-anim="item"
+          src={devShot.src}
+          width={devShot.width}
+          height={devShot.height}
+          alt="ProfesDyC running on a laptop and two phones: search results, the home page and a professor's rating"
+          loading="lazy"
+          class="w-full"
+        />
+      </div>
+    </section>
+
+    <!-- Close. The live site rather than a deck: this one shipped. -->
+    <section class="px-gutter pb-section-lg">
+      <div data-anim="rule" class="h-px w-full bg-hairline"></div>
+
+      <div data-group class="mt-section-md">
+        <a
+          href={LIVE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-anim="item"
+          class="group flex flex-col justify-between gap-16 rounded-lg border border-hairline p-8 transition-colors duration-300 hover:border-darkin hover:bg-darkin hover:text-white desktop:p-12"
+        >
+          {/* Same slot the Behance card gives its mark, so both case studies
+              close on the same shape. Stroked rather than filled: it is an
+              interface icon, not a brand. */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-9 w-9 desktop:h-10 desktop:w-10"
+            aria-hidden="true"
+          >
+            <path d="M15 3h6v6" />
+            <path d="M10 14 21 3" />
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+          </svg>
+
+          <div class="flex items-end justify-between gap-6">
+            <h2 class="font-display text-h2">Try live demo</h2>
+
+            <span
+              aria-hidden="true"
+              class="text-h3 transition-transform duration-300 group-hover:translate-x-1"
+            >
+              &rarr;
+            </span>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<!-- The logotype ships as flat near-black. Its paths take `currentColor` so the
+     card can set the color once — here, the near-white the brand reverses to.
+
+     Global rather than scoped: these paths live inside an imported SVG
+     component, which Astro's scoped styles do not tag. -->
+<style is:global>
+  .logo .mark-ink {
+    fill: currentColor;
+  }
+</style>
+
+<!-- The two reference marks take the palette's roles: the solid of each one is
+     ink, the shapes knocked out of it are paper. So they invert with the theme
+     instead of needing a white card under them, and neither foreign brand color
+     competes with the case study around it.
+
+     Global rather than scoped: these paths live inside imported SVG components,
+     which Astro's scoped styles do not tag. -->
+<style is:global>
+  .brand-mark .mark-ground {
+    fill: currentColor;
+  }
+
+  .brand-mark .mark-knockout {
+    fill: var(--color-white);
+  }
+</style>
