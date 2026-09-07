@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 
 const projects = (await getCollection("projects")).sort(
   (a, b) => a.data.order - b.data.order,
@@ -38,11 +39,19 @@ const projects = (await getCollection("projects")).sort(
               data-card-label={external ? "Visit Website" : "Read Case Study"}
               class="overflow-hidden rounded-lg bg-off-white"
             >
-              <img
-                src={project.data.image.src}
+              {/* `<Image>` rather than a bare <img>: `image.src` hands the
+                  browser the original file, so a 3240px export was being
+                  downloaded whole to fill a 576px box. This emits AVIF at the
+                  sizes the card is actually rendered at and lets the browser
+                  pick — 576 is the widest the card ever gets (1200 content, two
+                  columns), doubled for retina. */}
+              <Image
+                src={project.data.image}
                 alt={project.data.imageAlt ?? project.data.title}
-                width={project.data.image.width}
-                height={project.data.image.height}
+                widths={[576, 1152]}
+                sizes="(min-width: 640px) 576px, 100vw"
+                format="avif"
+                quality={72}
                 loading="lazy"
                 class="aspect-4/3 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
               />

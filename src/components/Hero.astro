@@ -1,5 +1,6 @@
 ---
-import joaco from "../assets/img/joaco.jpg";
+import { Image } from "astro:assets";
+import joaco from "../assets/img/joaco.avif";
 ---
 
 <!-- The header is fixed and lives in the layout now, so its height is reserved
@@ -18,10 +19,14 @@ import joaco from "../assets/img/joaco.jpg";
   <div
     class="flex min-h-0 flex-1 items-center justify-center px-gutter [--hero-img-bias:-9vh] tablet:[--hero-img-bias:-2vh] desktop:[--hero-img-bias:-1.5vh]"
   >
-    <img
-      src={joaco.src}
-      width={joaco.width}
-      height={joaco.height}
+    {/* `<Image>` rather than a bare <img>: the source is 3369px wide and the
+        portrait never renders above ~411 CSS px, so a plain tag shipped the
+        whole thing. 420 and 840 are that size at 1x and 2x. */}
+    <Image
+      src={joaco}
+      widths={[420, 840]}
+      sizes="(min-width: 640px) 420px, 56vw"
+      format="avif"
       alt="Joaquín Mesa"
       data-portrait
       transition:name="portrait"

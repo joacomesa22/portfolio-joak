@@ -2,7 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/Footer.astro";
 import { VIDEO_SOCIALS } from "../data/socials";
-import joaco from "../assets/img/joaco.jpg";
+import { Image } from "astro:assets";
+import joaco from "../assets/img/joaco.avif";
 ---
 
 <Layout
@@ -22,10 +23,13 @@ import joaco from "../assets/img/joaco.jpg";
         I bridge the gap between beautiful design and functional code.
       </h1>
 
-      <img
-        src={joaco.src}
-        width={joaco.width}
-        height={joaco.height}
+      {/* Same as the hero portrait: sized to what it actually renders at
+          rather than shipping the 3369px source. */}
+      <Image
+        src={joaco}
+        widths={[420, 840]}
+        sizes="(min-width: 640px) 420px, 56vw"
+        format="avif"
         alt="Joaquín Mesa"
         data-portrait
         transition:name="portrait"
