@@ -94,18 +94,30 @@ const wireframes = [
 // so the laptop fills 99% of one file's width and 74% of another's, and equal
 // boxes leave the last one visibly smaller than the rest. The factors bring
 // the laptops themselves to the same size.
+//
+// A crop that is off-centre needs the offset as well as the factor. Scaling
+// happens about the box's centre, so a laptop that sits in the left three
+// quarters of its file is pushed further left the more it is scaled up — the
+// last render ended up half a gutter into its neighbour's column. The `left`
+// nudge puts each laptop back on its column's axis; it is `position: relative`
+// rather than a translate because the entrance animation owns `transform` on
+// these elements and would drop anything already in it.
+//
+// The last one carries a little more than parity: it is the most foreshortened
+// of the four, so at an equal bounding width its screen reads as the smallest.
 const uiShots = [
   {
     src: uiMockup1,
     alt: "The recommendations home page",
     at: "desktop:left-0 desktop:top-0 desktop:w-[42%]",
-    fit: "scale-[1.14] desktop:scale-100",
+    fit: "relative left-[6.3%] scale-[1.14] desktop:left-0 desktop:scale-100",
   },
   {
     src: uiMockup2,
     alt: "The review form for a professor",
     at: "desktop:right-0 desktop:-top-[3%] desktop:w-[40%]",
-    fit: "",
+    // No desktop reset for the nudge: `at` sets this one's own `top` there.
+    fit: "relative top-4",
   },
   {
     src: uiMockup3,
@@ -117,7 +129,7 @@ const uiShots = [
     src: uiMockup4,
     alt: "A professor's profile: rating, distribution and reviews",
     at: "desktop:-right-30 desktop:-bottom-10 desktop:w-[54%]",
-    fit: "scale-[1.33] desktop:scale-100",
+    fit: "relative top-16 left-[16.5%] scale-[1.45] desktop:top-auto desktop:left-auto desktop:scale-100",
   },
 ];
 
@@ -196,9 +208,13 @@ const framing = [
          The statement takes the display face rather than a heading of its own:
          "Overview" as a label would say less than the sentence under it. -->
     <section class="px-gutter py-section-md">
+      <!-- Stacked, the gap carries more weight than it does side by side:
+           there it is a margin between two columns, but here it is the only
+           thing separating a render from the sentence under it, and at a
+           gutter the two read as one block. -->
       <div
         data-group
-        class="grid items-center gap-gutter desktop:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] desktop:gap-10"
+        class="grid items-center gap-12 desktop:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] desktop:gap-10"
       >
         <img
           data-anim="item"
@@ -262,10 +278,18 @@ const framing = [
           references.map((ref) => (
             <div
               data-group
-              class="grid items-center gap-gutter desktop:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] desktop:gap-12"
+              class="grid items-center gap-8 desktop:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] desktop:gap-12"
             >
-              <div data-anim="item" class="flex flex-col gap-8">
-                <div class="flex flex-col gap-5">
+              {/* Stacked, the capture belongs between the description and the
+                  features: it shows the platform being described, and the list
+                  is what was taken from it. `display: contents` is what lets
+                  it go there without a second copy — below desktop this column
+                  stops being a box, its two halves become items of the grid
+                  itself, and `order` interleaves the capture between them. At
+                  desktop the box comes back and the two halves stack in the
+                  left column as before. */}
+              <div class="contents desktop:flex desktop:flex-col desktop:gap-8">
+                <div data-anim="item" class="order-1 flex flex-col gap-5 desktop:order-none">
                   <ref.Logo
                     class:list={["brand-mark text-darkin", ref.markClass]}
                     aria-label={ref.name}
@@ -277,7 +301,7 @@ const framing = [
                   </div>
                 </div>
 
-                <ul class="flex flex-col gap-2 text-body">
+                <ul data-anim="item" class="order-3 flex flex-col gap-2 text-body desktop:order-none">
                   {ref.features.map((feature) => (
                     <li class="flex items-baseline gap-3">
                       <span
@@ -297,7 +321,7 @@ const framing = [
                 height={ref.shot.height}
                 alt={ref.alt}
                 loading="lazy"
-                class="w-full"
+                class="order-2 w-full desktop:order-none"
               />
             </div>
           ))
@@ -348,7 +372,11 @@ const framing = [
         <div class="relative mx-auto w-full max-w-[var(--container-content)]">
         {/* Reversed below desktop so the heading comes before the renders it
             introduces; at desktop the order is spatial, not sequential. */}
-        <div class="relative flex flex-col-reverse gap-gutter desktop:block desktop:aspect-[16/10]">
+        <!-- The gap is the whole separation between the heading and the four
+             renders it introduces — at a gutter the copy sat straight on top
+             of them. `desktop:block` drops it, where the two are not stacked
+             at all. -->
+        <div class="relative flex flex-col-reverse gap-16 desktop:block desktop:aspect-[16/10]">
           {/* `data-group` is what the reveal animation iterates: an item with no
               group ancestor is hidden by the entrance CSS and never revealed. */}
           <div data-group class="grid grid-cols-2 gap-4 tablet:gap-8 desktop:block">

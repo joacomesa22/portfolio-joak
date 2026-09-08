@@ -203,14 +203,23 @@ const steps = [
          stage marooned. -->
     <section class="px-gutter py-gutter">
       <div data-anim="card" class="relative">
+        <!-- Stacked, the order flips: the phones are the product, the dock
+             shot is the aside that says it shipped, so on a phone the screens
+             come first and the dock follows. At desktop the two sit side by
+             side and the order is spatial again — dock left, screens right.
+
+             The gap grows below desktop too: side by side a gutter is a
+             margin between two columns, but stacked it is the only thing
+             separating two full-width images, and at a gutter they read as
+             one run-on block. -->
         <div
-          class="grid items-center gap-gutter desktop:grid-cols-2 desktop:items-stretch"
+          class="grid items-center gap-12 desktop:grid-cols-2 desktop:items-stretch desktop:gap-gutter"
         >
           <!-- One card, filling its half of the stage: the app's mark sitting
                in the macOS dock, which says "this shipped" in a way an icon on
                its own does not. It matches the phones' height rather than
                setting its own, so the two halves stay level. -->
-          <div class="overflow-hidden rounded-lg border-4 border-[#dfe4e6] bg-[#f4f6f7] desktop:h-full">
+          <div class="order-2 overflow-hidden rounded-lg border-4 border-[#dfe4e6] bg-[#f4f6f7] desktop:order-none desktop:h-full">
             <img
               src={macDock.src}
               width={macDock.width}
@@ -224,7 +233,7 @@ const steps = [
                dashboard in front and a step lower, the login behind it. One
                relative box, so the overlap is a percentage of the pair and
                holds from phone to desktop. -->
-          <div class="relative mx-auto flex w-full max-w-[34rem] items-center justify-center desktop:max-w-none">
+          <div class="relative order-1 mx-auto flex w-full max-w-[34rem] items-center justify-center desktop:order-none desktop:max-w-none">
             <img
               src={dash.src}
               width={dash.width}
@@ -302,9 +311,12 @@ const steps = [
 
       <div data-anim="rule" class="h-px w-full bg-hairline"></div>
 
+      <!-- One column on a phone, not two: five steps into two columns leaves
+           the last one alone on its own row, which reads as a step that got
+           dropped rather than as the end of a process. -->
       <ol
         data-group
-        class="mt-section-sm grid grid-cols-2 gap-x-gutter gap-y-10 tablet:grid-cols-3 desktop:grid-cols-5 desktop:items-start desktop:gap-x-6"
+        class="mt-section-sm grid grid-cols-1 gap-x-gutter gap-y-10 tablet:grid-cols-3 desktop:grid-cols-5 desktop:items-start desktop:gap-x-6"
       >
         {
           steps.map((step, i) => (
@@ -643,14 +655,23 @@ const steps = [
         >
           <span class="text-orange">How might we</span>{" "}
           <ruby>help<rt>Action</rt></ruby>{" "}
-          <ruby>micro-entrepreneurs<rt>Users</rt></ruby>{" "}
-          {/* The goal clause starts its own line. Without the break it began
-              mid-line and ran onto the next, which left its label stranded
-              between the two lines it belonged to. */}
-          <br class="hidden desktop:inline" />
-          <ruby class="hmw-goal"
-            >streamline their customer service process with chatbots?<rt>Goal</rt></ruby
-          >
+          <ruby>micro-entrepreneurs<rt>Users</rt></ruby>
+          {/* The goal is the one fragment long enough to need more than one
+              line, and a <ruby> is exactly what cannot give it one: WebKit
+              lays a ruby segment out as an atomic box and never breaks inside
+              it, so on a phone the clause ran off the card and took the whole
+              document's width with it. So this fragment is a block with its
+              own label instead — same tinted run, same caption underneath,
+              but ordinary inline text that wraps wherever it has to.
+
+              It being a block is also what puts it on its own line, which is
+              what the old <br> was for. */}
+          <span class="hmw-goal">
+            <span class="hmw-goal-text"
+              >streamline their customer service process with chatbots?</span
+            >
+            <span class="hmw-goal-label">Goal</span>
+          </span>
         </p>
       </div>
     </section>
@@ -1168,7 +1189,8 @@ const steps = [
     line-height: 1.85;
   }
 
-  .hmw ruby {
+  .hmw ruby,
+  .hmw-goal-text {
     background-color: var(--color-off-white);
     border-radius: 0.2em;
     padding: 0.06em 0.22em;
@@ -1176,7 +1198,8 @@ const steps = [
     box-decoration-break: clone;
   }
 
-  .hmw rt {
+  .hmw rt,
+  .hmw-goal-label {
     font-family: var(--font-sans);
     font-size: 0.34em;
     font-weight: 500;
@@ -1189,20 +1212,20 @@ const steps = [
     padding-bottom: 0.9em;
   }
 
-  /* The goal's label hangs under its clause — but only from desktop up, where
-     the break above puts that clause on a line of its own. Narrower than that
-     the clause wraps, and an under-label is drawn beneath the FIRST of its
-     lines, i.e. straight through the second one. There it stays above with the
-     other two. */
-  @media (min-width: 1024px) {
-    .hmw-goal {
-      ruby-position: under;
-    }
+  /* The goal fragment. Its own line, and its label under the clause rather
+     than over it — the clause is the tail of the sentence, so a caption
+     beneath closes the statement instead of crowding the line above. Being a
+     real block, the label sits under the WHOLE wrapped clause at every width,
+     which is what the ruby version could only manage on one line. */
+  .hmw-goal {
+    display: block;
+    margin-top: 0.5em;
+  }
 
-    .hmw-goal rt {
-      padding-top: 0.9em;
-      padding-bottom: 0;
-    }
+  .hmw-goal-label {
+    display: block;
+    padding-top: 0.9em;
+    padding-bottom: 0;
   }
 
   .dt-icon path {
